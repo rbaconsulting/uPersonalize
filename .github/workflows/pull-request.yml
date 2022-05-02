@@ -1,5 +1,7 @@
 name: Pull Request
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 jobs:
@@ -18,4 +20,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore -c ${{ env.Configuration }}
     - name: Test
-      run: dotnet test --no-restore --no-build --verbosity normal
+      run: dotnet test --no-restore --no-build -c ${{ env.Configuration }} --verbosity normal

@@ -21,13 +21,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    - name: Upload Release Asset
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        upload_url: https://github.com/rbaconsulting/uPersonalize/releases/latest
-        asset_path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
-        asset_name: uPersonalize.${{ env.Release_Version }}.nupkg
-        asset_content_type: application/zip
+        name: uPersonalize-${{ env.Release_Version }}
+        path: ./${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
