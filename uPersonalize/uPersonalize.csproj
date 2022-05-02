@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<VersionPrefix>0.1.0</VersionPrefix>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="uPersonalize.targets">
+			<Pack>true</Pack>
+			<PackagePath>buildTransitive</PackagePath>
+		</None>
+
+		<Content Include="App_Plugins\**\*.*">
+			<Pack>true</Pack>
+			<PackagePath>content\App_Plugins</PackagePath>
+		</Content>
+		<Content Include="Views\Partials\grid\uPersonalize.cshtml">
+			<Pack>true</Pack>
+			<PackagePath>content\Views\Partials\grid</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Umbraco.Cms.Core" Version="9.4.3" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.4.3" />
+		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.4.3" />
+	</ItemGroup>
+</Project>

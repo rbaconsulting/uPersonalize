@@ -1,0 +1,192 @@
+﻿@using System.Web
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Html
+@using Newtonsoft.Json.Linq
+@using uPersonalize.Enums
+@using uPersonalize.Models
+@using uPersonalize.Interfaces
+@using System.Net
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<dynamic>
+@inject IPersonalizationService PersonalizationService
+
+@if (Model != null && Model.GetType() == typeof(JObject) && Model.sections != null)
+{
+    var oneColumn = ((System.Collections.ICollection)Model.sections).Count == 1;
+
+    <div class="umb-grid">
+        @if (oneColumn)
+        {
+            foreach (var section in Model.sections)
+            {
+                <div class="grid-section">
+                    @foreach (var row in section.rows)
+                    {
+                        renderRow(row, true);
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="container">
+                <div class="row clearfix">
+                    @foreach (var sec in Model.sections)
+                    {
+                        <div class="grid-section">
+                            <div class="col-md-@sec.grid column">
+                                @foreach (var row in sec.rows)
+                                {
+                                    renderRow(row, false);
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@functions{
+    private async Task renderRow(dynamic row, bool singleColumn)
+    {
+        <div @await RenderElementAttributes(row)>
+            @if (singleColumn) {
+                @:<div class="container">
+            }
+            <div class="row clearfix">
+                @foreach (var area in row.areas)
+                {
+                    <div class="col-md-@area.grid column">
+                        <div @await RenderElementAttributes(area)>
+                            @foreach (var control in area.controls)
+                            {
+                                if (control != null && control.editor != null && control.editor.view != null)
+                                {
+                                    <text>@await Html.PartialAsync("grid/editors/base", (object)control)</text>
+                                }
+                            }
+                        </div>
+                    </div>
+                 }
+            </div>
+            @if (singleColumn) {
+                @:</div>
+            }
+        </div>
+    }
+
+    public async Task<HtmlString> RenderElementAttributes(dynamic contentItem)
+    {
+        var attrs = new List<string>();
+        JObject cfg = contentItem.config;
+        var filter = new PersonalizationFilter();
+        var additionalClasses = string.Empty;
+
+        if (cfg != null)
+        {
+            foreach (JProperty property in cfg.Properties())
+            {
+                if(property.Name.Equals("uPersonalize-classes"))
+                {
+                    additionalClasses = property.Value.ToString();
+                }
+                else if(property.Name.Equals("uPersonalize-conditions"))
+                {
+                    filter.Condition = (PersonalizationConditions)Enum.Parse(typeof(PersonalizationConditions), property.Value.ToString());
+                }
+                else if(property.Name.Equals("uPersonalize-actions"))
+                {
+                    filter.Action = (PersonalizationActions)Enum.Parse(typeof(PersonalizationActions), property.Value.ToString());
+                }
+                else if(property.Name.Equals("uPersonalize-ip"))
+                {
+                    filter.IpAddress = property.Value.ToString();
+                }
+                else if(property.Name.Equals("uPersonalize-device"))
+                {
+                    filter.DeviceToMatch = (DeviceTypes)Enum.Parse(typeof(DeviceTypes), property.Value.ToString());
+                }
+                else if(property.Name.Equals("uPersonalize-page-visit"))
+                {
+                    var udi = property.Value.ToString().TrimStart("umb://document/");
+                    var content = Umbraco.Content(udi);
+
+                    filter.PageId = content.Id.ToString();
+                }
+                else if(property.Name.Equals("uPersonalize-event"))
+                {
+                    filter.EventName = property.Value.ToString();
+                }
+                else if(property.Name.Equals("uPersonalize-page-event-count"))
+                {
+                    var parseResult = int.TryParse(property.Value.ToString(), out int pageEventCount);
+                    if(parseResult)
+                    {
+                        filter.PageEventCount = pageEventCount;
+                    }
+                }
+                else
+                {
+                    var propertyValue = HttpUtility.HtmlAttributeEncode(property.Value.ToString());
+                    attrs.Add(property.Name + "=\"" + propertyValue + "\"");
+                }
+            }
+        }
+
+        var isPersonalizedMatch = await PersonalizationService.IsMatch(filter);
+
+        JObject style = contentItem.styles;
+
+
+        if (style != null)
+        {
+            var cssVals = new List<string>();
+
+            foreach (JProperty property in style.Properties())
+            {
+                var propertyValue = property.Value.ToString();
+                if (string.IsNullOrWhiteSpace(propertyValue) == false)
+                {
+                    cssVals.Add(property.Name + ":" + propertyValue + ";");
+                }
+            }
+
+            if (cssVals.Any())
+            {
+                attrs.Add("style=\"" + HttpUtility.HtmlAttributeEncode(string.Join(" ", cssVals)) + "\"");
+            }
+        }
+
+        var existingClasses = attrs.Find(a => a.StartsWith("class="));
+        var personalizedValue = string.Empty;
+
+        if ((isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (!isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
+        {
+            personalizedValue = "d-block";    
+        }
+        else if ((!isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
+        {
+            personalizedValue = "d-none";
+        }
+        else if (isPersonalizedMatch && filter.Action == PersonalizationActions.Addition_Styles && !string.IsNullOrWhiteSpace(additionalClasses))
+        {
+            personalizedValue = HttpUtility.HtmlAttributeEncode(additionalClasses);
+        }
+
+        if(!string.IsNullOrWhiteSpace(personalizedValue))
+        {
+            if (!string.IsNullOrWhiteSpace(existingClasses))
+            {
+                var i = attrs.IndexOf(existingClasses);
+                attrs[i] = $"{existingClasses.TrimEnd('\"')} {personalizedValue}\"";
+            }
+            else
+            {
+                attrs.Add($"class=\"{personalizedValue}\"");
+            }
+        }
+
+        return new HtmlString(string.Join(" ", attrs));
+    }
+}

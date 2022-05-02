@@ -1,0 +1,32 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<uPersonalizeContentFilesPath>$(MSBuildThisFileDirectory)..\content\App_Plugins\uPersonalize\**\*.*</uPersonalizeContentFilesPath>
+		<uPersonalizeContentViewFilesPath>$(MSBuildThisFileDirectory)..\content\Views\Partials\grid\uPersonalize.cshtml</uPersonalizeContentViewFilesPath>
+	</PropertyGroup>
+	<Target Name="CopyuPersonalizePackageAssets" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<uPersonalizePackageContentFiles Include="$(uPersonalizeContentFilesPath)" />
+			<uPersonalizePackageContentViews Include="$(uPersonalizeContentViewFilesPath)" />
+		</ItemGroup>
+		<Message Text="Copying uPersonalize files from package"  Importance="high" />
+		<Warning Text="No uPersonalize Package files found in $(uPersonalizePackageContentFiles)" Condition="@(uPersonalizePackageContentFiles->Count()) == 0" />
+		<Copy
+            SourceFiles="@(uPersonalizePackageContentFiles)"
+            DestinationFiles="@(uPersonalizePackageContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\uPersonalize\%(RecursiveDir)%(Filename)%(Extension)')"
+            SkipUnchangedFiles="true" />
+		<Copy
+            SourceFiles="@(uPersonalizePackageContentViews)"
+            DestinationFiles="@(uPersonalizePackageContentViews->'$(MSBuildProjectDirectory)\Views\Partials\grid\uPersonalize.cshtml')"
+            SkipUnchangedFiles="true" />
+	</Target>
+
+	<Target Name="ClearuPersonalizePackageAssets" BeforeTargets="Clean">
+		<ItemGroup>
+			<uPersonalizePackageDir Include="$(MSBuildProjectDirectory)\App_Plugins\uPersonalize\" />
+			<uPersonalizeGridView Include="$(MSBuildProjectDirectory)\Views\Partials\grid\uPersonalize.cshtml" />
+		</ItemGroup>
+		<Message Text="Clear old uPersonalize Package data"  Importance="high" />
+		<RemoveDir Directories="@(uPersonalizePackageDir)"  />
+		<Delete Files="@(uPersonalizeGridView)"  />
+	</Target>
+</Project>

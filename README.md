@@ -1,2 +1,2 @@
 # uPersonalize
-Umbraco 9 Personalization App Plugin
+Personalization API &amp; options for Umbraco 9

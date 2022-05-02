@@ -1,0 +1,15 @@
+﻿{
+	"dashboards": [
+		{
+			"alias": "uPersonalizeSettings",
+			"view": "/App_Plugins/uPersonalize/dashboards/settings/uPersonalize-settings.html",
+			"sections": [ "settings" ],
+			"access": [
+				{ "grant": "admin" }
+			]
+		}
+	],
+	"javascript": [
+		"/App_Plugins/uPersonalize/dashboards/settings/uPersonalize.settings.controller.js"
+	]
+}
