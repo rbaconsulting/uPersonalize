@@ -30,4 +30,4 @@ jobs:
         upload_url: https://github.com/rbaconsulting/uPersonalize/releases/latest
         asset_path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
         asset_name: uPersonalize.${{ env.Release_Version }}.nupkg
-        asset_content_type: application/nupkg
+        asset_content_type: application/zip
