@@ -20,11 +20,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore -c ${{ env.Configuration }} /p:Version=${{ env.Release_Version }}
+      run: dotnet build --no-restore -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
     - name: Test
       run: dotnet test --no-restore --no-build --verbosity normal
-    - name: Nuget Pack
-      run: dotnet pack --no-restore --no-build -c ${{ env.Configuration }} -o ${{ env.Output_Folder }}
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
