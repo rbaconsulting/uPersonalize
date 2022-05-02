@@ -21,8 +21,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    - name: upload artifact
+    - name: Upload Nuget Package
       uses: actions/upload-artifact@v2
       with:
         name: uPersonalize-${{ env.Release_Version }}
-        path: ./${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
+        path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
