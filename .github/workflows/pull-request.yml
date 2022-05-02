@@ -1,16 +1,12 @@
-name: .NET
-
+name: Pull Request
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
-
+    env:
+      Configuration: 'Release'
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -20,6 +16,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -c ${{ env.Configuration }}
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-restore --no-build --verbosity normal
