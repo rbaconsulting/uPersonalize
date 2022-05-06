@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 5.0.x
     - name: Pack Nuget Package
       run: dotnet pack -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    - name: Publish the package to nuget.org
+    - name: Add nuget.org package source
       run: dotnet nuget add source --username agilbert-rba --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/rbaconsulting/index.json"
     - name: Publish the package to nuget.org
-      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source "github"
     - name: Upload to artifact
       uses: actions/upload-artifact@v2
       with:
