@@ -17,9 +17,6 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 5.0.x
-        source-url: https://nuget.pkg.github.com/rbaconsulting/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Pack Nuget Package
       run: dotnet pack -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
     - name: Publish the package to nuget.org
