@@ -5,9 +5,19 @@
 		<RepositoryType>git</RepositoryType>
 		<Company>RBA Consulting</Company>
 		<Authors>Austin Gilbert</Authors>
+		<PackageProjectUrl>https://github.com/rbaconsulting/uPersonalize/wiki</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>Umbraco;Personalization</PackageTags>
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<Copyright></Copyright>
+		<Description>An app plugin adding personalization options to the Umbraco CMS.</Description>
 	</PropertyGroup>
 	
 	<ItemGroup>
+		<None Include="..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 		<None Include="uPersonalize.targets">
 			<Pack>true</Pack>
 			<PackagePath>buildTransitive</PackagePath>
