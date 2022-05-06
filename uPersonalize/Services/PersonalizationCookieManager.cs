@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using uPersonalize.Enums;
 using uPersonalize.Enums.Extensions;
 using uPersonalize.Interfaces;
-using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace uPersonalize.Services
 {
@@ -23,52 +23,67 @@ namespace uPersonalize.Services
 			_cookieOptions = personalizationSettings.GetCookieOptions();
 		}
 
-		public string GetPersonalizationCookie(PersonalizationConditions type)
+		public async Task<string> GetCookie(PersonalizationConditions type)
 		{
 			var cookieName = type.GetCookieName();
 
-			return HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(cookieName, out string cookieValue) ? cookieValue : string.Empty;
+			return string.IsNullOrWhiteSpace(cookieName) ? string.Empty :
+				   HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(cookieName, out string cookieValue) ? cookieValue : string.Empty;
 		}
 
-		public void SetPersonalizationCookie(PersonalizationConditions type, string cookieValue)
+		public async Task<bool> TrySetCookie(PersonalizationConditions type, string cookieValue)
 		{
-			var cookieName = type.GetCookieName();
-
-			HttpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, _cookieOptions);
-		}
-
-		public void SetPairValueListCookie(PersonalizationConditions type, string key, int value = 1)
-		{
-			var currentCookieValue = GetPersonalizationCookie(type);
-
-			if (!string.IsNullOrWhiteSpace(currentCookieValue))
+			if (!string.IsNullOrWhiteSpace(cookieValue))
 			{
-				var regex = new Regex($"{key}:\\d*");
-				var match = regex.Match(currentCookieValue);
+				var cookieName = type.GetCookieName();
 
-				if (match.Success)
+				if (!string.IsNullOrWhiteSpace(cookieName))
 				{
-					var parseResult = int.TryParse(match.Value.Split(':')[1], out int currentCount);
+					HttpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, _cookieOptions);
+					return true;
+				}
+			}
 
-					if (parseResult)
+			return false;
+		}
+
+		public async Task<bool> TrySetKeyValueListCookie(PersonalizationConditions type, string key, int value = 1)
+		{
+			if (!string.IsNullOrWhiteSpace(key) && (int)type > 2)
+			{
+				var currentCookieValue = await GetCookie(type);
+
+				if (!string.IsNullOrWhiteSpace(currentCookieValue))
+				{
+					var regex = new Regex($"{key}:\\d*");
+					var match = regex.Match(currentCookieValue);
+
+					if (match.Success)
 					{
-						value += currentCount;
-						SetPersonalizationCookie(type, regex.Replace(currentCookieValue, $"{key}:{value}"));
+						var parseResult = int.TryParse(match.Value.Split(':')[1], out int currentCount);
+
+						if (parseResult)
+						{
+							value += currentCount;
+							return await TrySetCookie(type, regex.Replace(currentCookieValue, $"{key}:{value}"));
+						}
+						else
+						{
+							return await TrySetCookie(type, $"{currentCookieValue},{key}:{value}");
+						}
 					}
 					else
 					{
-						SetPersonalizationCookie(type, $"{currentCookieValue},{key}:{value}");
+						return await TrySetCookie(type, $"{currentCookieValue},{key}:{value}");
 					}
 				}
 				else
 				{
-					SetPersonalizationCookie(type, $"{currentCookieValue},{key}:{value}");
+					return await TrySetCookie(type, $"{key}:{value}");
 				}
 			}
-			else
-			{
-				SetPersonalizationCookie(type, $"{key}:{value}");
-			}
+
+			return false;
 		}
 	}
 }
