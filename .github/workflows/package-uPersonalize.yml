@@ -17,11 +17,16 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    - name: Upload Nuget Package
+        source-url: https://nuget.pkg.github.com/rbaconsulting/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Pack Nuget Package
+      run: dotnet pack -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
+    - name: Publish the package to nuget.org
+      run: dotnet nuget add source --username agilbert-rba --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/rbaconsulting/index.json"
+    - name: Publish the package to nuget.org
+      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+    - name: Upload to artifact
       uses: actions/upload-artifact@v2
       with:
         name: uPersonalize-${{ env.Release_Version }}

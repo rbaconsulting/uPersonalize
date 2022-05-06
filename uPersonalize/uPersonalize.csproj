@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/rbaconsulting/uPersonalize</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Company>RBA Consulting</Company>
+		<Authors>Austin Gilbert</Authors>
 	</PropertyGroup>
 	
 	<ItemGroup>

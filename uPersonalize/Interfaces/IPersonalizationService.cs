@@ -1,5 +1,4 @@
-﻿using uPersonalize.Enums;
-using uPersonalize.Models;
+﻿using uPersonalize.Models;
 using System.Threading.Tasks;
 
 namespace uPersonalize.Interfaces
@@ -8,9 +7,9 @@ namespace uPersonalize.Interfaces
 	{
 		Task TrackUser(int pageId);
 		Task<bool> IsMatch(PersonalizationFilter filter);
-		void TriggerEvent(string eventName);
-		void PageVisited(string pageId);
-		int GetTriggeredEventCount(string eventName);
-		int GetPageVisitCount(string pageId);
+		Task<bool> TryTriggerEvent(string eventName);
+		Task<bool> TryPageVisit(string pageId);
+		Task<int> GetTriggeredEventCount(string eventName);
+		Task<int> GetPageVisitCount(string pageId);
 	}
 }

@@ -27,7 +27,7 @@ namespace uPersonalize.Controllers
 		{
 			if (!string.IsNullOrWhiteSpace(eventName))
 			{
-				_personalizationService.TriggerEvent(eventName);
+				_personalizationService.TryTriggerEvent(eventName);
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace uPersonalize.Controllers
 		{
 			if (!string.IsNullOrWhiteSpace(pageId))
 			{
-				_personalizationService.PageVisited(pageId);
+				_personalizationService.TryPageVisit(pageId);
 			}
 		}
 	}
