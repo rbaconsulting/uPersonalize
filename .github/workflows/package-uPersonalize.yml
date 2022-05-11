@@ -8,6 +8,7 @@ jobs:
     env:
       Configuration: 'Release'
       Output_Folder: './output'
+      Umbpack_Ouput_Folder: './uPersonalize/App_Plugins/uPersonalize'
 
     runs-on: ubuntu-latest
 
@@ -25,20 +26,41 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
-    - name: Pack Nuget Package
-      run: dotnet pack -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    
+    - name: Install Umbpack
+      run: dotnet tool install --global Umbraco.Tools.Packages
+
     - name: Add nuget.org package source
       run: dotnet nuget add source --username agilbert-rba --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/rbaconsulting/index.json"
-    
-    - name: Publish the github packages
-      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+
+    - name: Restore Nuget Packages
+      run: dotnet restore
+
+    - name: Dotnet Build
+      run: dotnet build --no-restore -c ${{ env.Configuration }} /p:Version=${{ env.Release_Version }}
+
+    - name: Pack Nuget Package
+      run: dotnet pack --no-restore --no-build -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
 
     - name: Publish to nuget.org
       run: dotnet nuget push ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} -s 'https://api.nuget.org/v3/index.json'
 
-    - name: Upload to artifact
+    - name: Publish the github packages
+      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+
+    - name: Upload nuget to artifact
       uses: actions/upload-artifact@v2
       with:
-        name: uPersonalize-${{ env.Release_Version }}
+        name: uPersonalize-${{ env.Release_Version }} Nuget Package
         path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
+
+    - name: Umbpack Pack
+      run: umbpack pack ${{ env.Umbpack_Ouput_Folder }}/package.xml -v ${{ env.Release_Version }} -o ${{ env.Umbpack_Ouput_Folder }} -n package.zip -p Configuration=${{ env.Configuration }}
+
+    - name: Umbpack Push
+      run: umbpack push ${{ env.Umbpack_Ouput_Folder }}/package.zip -c false -k ${{ secrets.UMBRACO_API_KEY }}
+
+    - name: Upload Umbraco package to artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: uPersonalize-${{ env.Release_Version }} Umbraco Package
+        path: ${{ env.Umbpack_Ouput_Folder }}/package.zip
