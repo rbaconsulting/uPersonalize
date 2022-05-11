@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-MPL2.0-green)](https://github.com/rbaconsulting/uPersonalize/blob/main/LICENSE)
 
 [![Package uPersonalize](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml)
-[![Build Status](https://github.com/rbaconsulting/uPersonalize/actions/workflows/pull-request.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/pull-request.yml)
+[![Build Status](https://github.com/rbaconsulting/uPersonalize/actions/workflows/ci-build.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/pull-request.yml)
 
 ## Overview
 
