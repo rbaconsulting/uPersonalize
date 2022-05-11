@@ -52,15 +52,3 @@ jobs:
       with:
         name: uPersonalize-${{ env.Release_Version }} Nuget Package
         path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg
-
-    - name: Umbpack Pack
-      run: umbpack pack ${{ env.Umbpack_Ouput_Folder }}/package.xml -v ${{ env.Release_Version }} -o ${{ env.Umbpack_Ouput_Folder }} -n package.zip -p Configuration=${{ env.Configuration }}
-
-    - name: Umbpack Push
-      run: umbpack push ${{ env.Umbpack_Ouput_Folder }}/package.zip -c false -k ${{ secrets.UMBRACO_API_KEY }}
-
-    - name: Upload Umbraco package to artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: uPersonalize-${{ env.Release_Version }} Umbraco Package
-        path: ${{ env.Umbpack_Ouput_Folder }}/package.zip
