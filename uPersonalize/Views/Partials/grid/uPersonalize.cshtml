@@ -109,7 +109,7 @@
                 }
                 else if(property.Name.Equals("uPersonalize-page-visit"))
                 {
-                    var udi = property.Value.ToString().TrimStart("umb://document/");
+                    var udi = property.Value.ToString().Replace("umb://document/", "");
                     var content = Umbraco.Content(udi);
 
                     filter.PageId = content.Id.ToString();
@@ -163,11 +163,11 @@
 
         if ((isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (!isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
         {
-            personalizedValue = "d-block";    
+            personalizedValue = "uPersonalize-show";    
         }
         else if ((!isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
         {
-            personalizedValue = "d-none";
+            personalizedValue = "uPersonalize-hide";
         }
         else if (isPersonalizedMatch && filter.Action == PersonalizationActions.Addition_Styles && !string.IsNullOrWhiteSpace(additionalClasses))
         {

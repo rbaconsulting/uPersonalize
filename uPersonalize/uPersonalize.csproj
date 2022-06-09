@@ -27,6 +27,7 @@
 			<Pack>true</Pack>
 			<PackagePath>content\App_Plugins</PackagePath>
 		</Content>
+
 		<Content Include="Views\Partials\grid\uPersonalize.cshtml">
 			<Pack>true</Pack>
 			<PackagePath>content\Views\Partials\grid</PackagePath>
