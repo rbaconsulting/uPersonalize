@@ -4,6 +4,7 @@ using uPersonalize.Interfaces;
 using Moq;
 using uPersonalize.Enums;
 using System.Threading.Tasks;
+using Umbraco.Cms.Core.Security;
 
 namespace uPersonalize.Tests
 {
@@ -28,6 +29,14 @@ namespace uPersonalize.Tests
 		{
 			var httpContextAccessor = new Mock<IHttpContextAccessor>();
 			httpContextAccessor.SetupGet(h => h.HttpContext).Returns(context);
+
+			return httpContextAccessor.Object;
+		}
+
+		public static IMemberManager MemberManager()
+		{
+			var httpContextAccessor = new Mock<IMemberManager>();
+			httpContextAccessor.SetupGet(h => h.IsLoggedIn()).Returns(false);
 
 			return httpContextAccessor.Object;
 		}

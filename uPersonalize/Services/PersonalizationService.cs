@@ -10,21 +10,24 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using uPersonalize.Constants;
 using Microsoft.Extensions.Primitives;
+using Umbraco.Cms.Core.Security;
+using static uPersonalize.Constants.RegexRules;
 
 namespace uPersonalize.Services
 {
 	public class PersonalizationService : IPersonalizationService
 	{
-		private ILogger<PersonalizationService> Logger { get; }
-		private IHttpContextAccessor HttpContextAccessor { get; }
-		private IPersonalizationCookieManager CookieManager { get; }
+		private readonly ILogger<PersonalizationService> _logger;
+		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly IPersonalizationCookieManager _cookieManager;
+		private readonly IMemberManager _memberManager;
 
-		public PersonalizationService(ILogger<PersonalizationService> logger, IHttpContextAccessor httpContextAccessor, IPersonalizationCookieManager cookieManager)
+		public PersonalizationService(ILogger<PersonalizationService> logger, IMemberManager memberManager, IHttpContextAccessor httpContextAccessor, IPersonalizationCookieManager cookieManager)
 		{
-			Logger = logger;
-			HttpContextAccessor = httpContextAccessor;
-
-			CookieManager = cookieManager;
+			_logger = logger;
+			_httpContextAccessor = httpContextAccessor;
+			_cookieManager = cookieManager;
+			_memberManager = memberManager;
 		}
 
 		public async Task TrackUser(int pageId)
@@ -34,24 +37,24 @@ namespace uPersonalize.Services
 				await TryPageVisit(pageId.ToString());
 			}
 
-			var userAgent = HttpContextAccessor.HttpContext.Request.Headers["User-Agent"];
+			var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
 
 			if (!StringValues.IsNullOrEmpty(userAgent))
 			{
 				var deviceType = DeviceTypes.Default;
 
-				if (Regex.IsMatch(userAgent, "Android"))
+				if (Regex.IsMatch(userAgent, UserAgents.Android))
 				{
 					deviceType = DeviceTypes.Android;
 				}
-				else if (Regex.IsMatch(userAgent, "Windows"))
+				else if (Regex.IsMatch(userAgent, UserAgents.Windows))
 				{
-					deviceType = DeviceTypes.Desktop_Windows;
+					deviceType = DeviceTypes.Windows;
 				}
 
 				if (deviceType != DeviceTypes.Default)
 				{
-					await CookieManager.TrySetCookie(PersonalizationConditions.Device_Type, deviceType.ToString());
+					await _cookieManager.TrySetCookie(PersonalizationConditions.Device_Type, deviceType.ToString());
 				}
 			}
 		}
@@ -65,19 +68,16 @@ namespace uPersonalize.Services
 				case PersonalizationConditions.IP_Address:
 					if (!string.IsNullOrWhiteSpace(filter.IpAddress))
 					{
-						var regex = new Regex("^((\\d|(x|X)){3}\\.?){4}$");
-						var regexMask = new Regex("(x|X){3}");
+						var ipAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? string.Empty;
 
-						var ipAddress = HttpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? string.Empty;
-
-						if (regex.IsMatch(filter.IpAddress) && !IPAddress.IsLoopback(HttpContextAccessor.HttpContext.Connection.RemoteIpAddress))
+						if (Regex.IsMatch(filter.IpAddress, Conditions.IP) && !IPAddress.IsLoopback(_httpContextAccessor.HttpContext.Connection.RemoteIpAddress))
 						{
 							var ipToMatch = filter.IpAddress.Split('.');
 							var ipAddressSegments = ipAddress.Split('.');
 
 							for (int i = 0; i < 4; i++)
 							{
-								if (regexMask.IsMatch(ipToMatch[i]))
+								if (Regex.IsMatch(ipToMatch[i], Conditions.IPMask))
 								{
 									continue;
 								}
@@ -95,14 +95,14 @@ namespace uPersonalize.Services
 
 					break;
 				case PersonalizationConditions.Device_Type:
-					var deviceType = await CookieManager.GetCookie(filter.Condition);
+					var deviceType = await _cookieManager.GetCookie(filter.Condition);
 
-					return !string.IsNullOrWhiteSpace(deviceType) ? filter.DeviceToMatch.ToString().Equals(deviceType) : false;
+					return !string.IsNullOrWhiteSpace(deviceType) && filter.DeviceToMatch.ToString().Equals(deviceType);
 				case PersonalizationConditions.Visited_Page:
 				case PersonalizationConditions.Visited_Page_Count:
 				case PersonalizationConditions.Event_Triggered:
 				case PersonalizationConditions.Event_Triggered_Count:
-					var visitedPages = await CookieManager.GetCookie(filter.Condition);
+					var visitedPages = await _cookieManager.GetCookie(filter.Condition);
 					var isEvent = filter.Condition == PersonalizationConditions.Event_Triggered || filter.Condition == PersonalizationConditions.Event_Triggered_Count;
 					var compareTo = isEvent ? filter.EventName : filter.PageId;
 
@@ -135,6 +135,8 @@ namespace uPersonalize.Services
 					}
 
 					break;
+				case PersonalizationConditions.Logged_In:
+					return _memberManager.IsLoggedIn();
 				default:
 					break;
 			}
@@ -144,9 +146,9 @@ namespace uPersonalize.Services
 
 		public async Task<bool> TryTriggerEvent(string eventName)
 		{
-			if (!string.IsNullOrWhiteSpace(eventName) && RegexRules.Events.Name.IsMatch(eventName))
+			if (!string.IsNullOrWhiteSpace(eventName) && Regex.IsMatch(eventName, Events.Name))
 			{
-				return await CookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Event_Triggered, eventName);
+				return await _cookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Event_Triggered, eventName);
 			}
 
 			return false;
@@ -154,9 +156,9 @@ namespace uPersonalize.Services
 
 		public async Task<bool> TryPageVisit(string pageId)
 		{
-			if (!string.IsNullOrWhiteSpace(pageId) && RegexRules.Umbraco.PageItemId.IsMatch(pageId))
+			if (!string.IsNullOrWhiteSpace(pageId) && Regex.IsMatch(pageId, RegexRules.Umbraco.PageItemId))
 			{
-				return await CookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Visited_Page, pageId);
+				return await _cookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Visited_Page, pageId);
 			}
 
 			return false;
@@ -164,9 +166,9 @@ namespace uPersonalize.Services
 
 		public async Task<int> GetTriggeredEventCount(string eventName)
 		{
-			if (!string.IsNullOrWhiteSpace(eventName) && RegexRules.Events.Name.IsMatch(eventName))
+			if (!string.IsNullOrWhiteSpace(eventName) && Regex.IsMatch(eventName, Events.Name))
 			{
-				var cookieValue = await CookieManager.GetCookie(PersonalizationConditions.Event_Triggered);
+				var cookieValue = await _cookieManager.GetCookie(PersonalizationConditions.Event_Triggered);
 				var regex = new Regex($"{eventName}:\\d*");
 
 				if (!string.IsNullOrWhiteSpace(cookieValue))
@@ -187,9 +189,9 @@ namespace uPersonalize.Services
 
 		public async Task<int> GetPageVisitCount(string pageId)
 		{
-			if (!string.IsNullOrWhiteSpace(pageId) && RegexRules.Umbraco.PageItemId.IsMatch(pageId))
+			if (!string.IsNullOrWhiteSpace(pageId) && Regex.IsMatch(pageId, RegexRules.Umbraco.PageItemId))
 			{
-				var cookieValue = await CookieManager.GetCookie(PersonalizationConditions.Visited_Page);
+				var cookieValue = await _cookieManager.GetCookie(PersonalizationConditions.Visited_Page);
 
 				var regex = new Regex($"{pageId}:\\d*");
 

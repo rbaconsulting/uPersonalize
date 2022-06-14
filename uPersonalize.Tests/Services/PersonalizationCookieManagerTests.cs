@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using uPersonalize.Constants;
 using uPersonalize.Enums;
@@ -96,7 +97,7 @@ namespace uPersonalize.Tests.Services
 			var cookieValue = GetUnitTestCookie(personalizationCondition);
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(RegexRules.Cookies.Values.KeyValueListSingle.IsMatch(cookieValue));
+			Assert.IsTrue(Regex.IsMatch(cookieValue, RegexRules.Cookies.Values.KeyValueListSingle));
 			Assert.AreEqual($"{key}:2", cookieValue);
 		}
 
@@ -121,7 +122,7 @@ namespace uPersonalize.Tests.Services
 			_personalizationCookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Visited_Page, "12345").Wait();
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(RegexRules.Cookies.Values.KeyValueList.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page)));
+			Assert.IsTrue(Regex.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page), RegexRules.Cookies.Values.KeyValueListSingle));
 		}
 
 		[TestMethod]
@@ -130,7 +131,7 @@ namespace uPersonalize.Tests.Services
 			_personalizationCookieManager.TrySetKeyValueListCookie(PersonalizationConditions.Visited_Page, "12345").Wait();
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(RegexRules.Cookies.Values.KeyValueList.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page)));
+			Assert.IsTrue(Regex.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page), RegexRules.Cookies.Values.KeyValueListSingle));
 		}
 
 		[TestMethod]
@@ -142,7 +143,7 @@ namespace uPersonalize.Tests.Services
 
 			Assert.AreEqual("10:2", cookieValue);
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(RegexRules.Cookies.Values.KeyValueListSingle.IsMatch(cookieValue));
+			Assert.IsTrue(Regex.IsMatch(cookieValue, RegexRules.Cookies.Values.KeyValueListSingle));
 		}
 
 		[TestMethod]

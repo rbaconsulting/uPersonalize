@@ -15,6 +15,7 @@ namespace uPersonalize.Enums
 		[CookieName("uPersonalize_click_event")]
 		Event_Triggered = 5,
 		[CookieName("uPersonalize_click_event")]
-		Event_Triggered_Count = 6
+		Event_Triggered_Count = 6,
+		Logged_In = 7
 	}
 }
