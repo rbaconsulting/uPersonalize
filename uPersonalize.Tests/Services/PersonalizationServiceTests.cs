@@ -20,6 +20,7 @@ namespace uPersonalize.Tests.Services
 			SetupBase();
 
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+																 MoqProvider.MemberManager(),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(true, false));
 			Random = new Random();
@@ -55,7 +56,7 @@ namespace uPersonalize.Tests.Services
 				{
 					IpAddress = IPAddress.None.ToString(),
 					Condition = personalizationCondition,
-					DeviceToMatch = DeviceTypes.Desktop_Windows,
+					DeviceToMatch = DeviceTypes.Windows,
 					PageId = "10",
 					EventName = "testEvent",
 					PageEventCount = 1
@@ -73,6 +74,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Valid_Filter_Key_Value_List_Match(PersonalizationConditions personalizationCondition)
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+																 MoqProvider.MemberManager(),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, true));
 
@@ -114,6 +116,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Valid_Filter_Key_Value_List_No_Match(PersonalizationConditions personalizationCondition)
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+																 MoqProvider.MemberManager(),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, true));
 
@@ -151,6 +154,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Empty_Cookies()
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+																 MoqProvider.MemberManager(),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, false));
 
@@ -164,7 +168,7 @@ namespace uPersonalize.Tests.Services
 				var filter = new PersonalizationFilter()
 				{
 					Condition = personalizationCondition,
-					DeviceToMatch = DeviceTypes.Desktop_Windows,
+					DeviceToMatch = DeviceTypes.Windows,
 					PageId = "10",
 					EventName = "testEvent",
 					PageEventCount = 1

@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "App_Plugins/uPersonalize/personalization.min.js",
+    "inputFiles": [
+      "App_Plugins/uPersonalize/personalization.js"
+    ]
+  }
+]

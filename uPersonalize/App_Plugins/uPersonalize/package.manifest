@@ -10,6 +10,7 @@
 		}
 	],
 	"javascript": [
-		"/App_Plugins/uPersonalize/dashboards/settings/uPersonalize.settings.controller.js"
+		"/App_Plugins/uPersonalize/dashboards/settings/uPersonalize.settings.controller.js",
+		"/App_Plugins/uPersonalize/grid-editor/uPersonalization-settings.controller.js"
 	]
 }

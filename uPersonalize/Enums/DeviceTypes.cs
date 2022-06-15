@@ -4,9 +4,10 @@
 	{
 		Default = 0,
 		Android = 1,
-		iPhone = 2,
-		Desktop_Windows = 3,
-		Desktop_Linux = 4,
-		Desktop_Mac = 5
+		iOS = 2,
+		Windows_Phone = 3,
+		Windows = 4,
+		Linux = 5,
+		Mac = 6
 	}
 }
