@@ -6,11 +6,6 @@ using System.Web;
 using uPersonalize.Enums;
 using uPersonalize.Enums.Extensions;
 using System.Linq;
-using Microsoft.Extensions.Logging;
-using Moq;
-using uPersonalize.Services;
-using uPersonalize.Interfaces;
-using System.Net;
 
 namespace uPersonalize.Tests
 {
