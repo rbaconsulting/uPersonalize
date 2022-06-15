@@ -18,6 +18,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore -c ${{ env.Configuration }}
+      run: dotnet build uPersonalize/uPersonalize.csproj --no-restore -c ${{ env.Configuration }}
     - name: Test
       run: dotnet test --no-restore --no-build -c ${{ env.Configuration }} --verbosity normal

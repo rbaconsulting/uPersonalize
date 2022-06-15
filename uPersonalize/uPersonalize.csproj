@@ -28,6 +28,8 @@
 			<PackagePath>content\App_Plugins</PackagePath>
 		</Content>
 
+		<None Remove="App_Plugins\uPersonalize\grid-editor\uPersonalization-settings.controller.js" />
+
 		<Content Include="Views\Partials\grid\uPersonalize.cshtml">
 			<Pack>true</Pack>
 			<PackagePath>content\Views\Partials\grid</PackagePath>

@@ -36,7 +36,7 @@ namespace uPersonalize.Tests
 		public static IMemberManager MemberManager()
 		{
 			var httpContextAccessor = new Mock<IMemberManager>();
-			httpContextAccessor.SetupGet(h => h.IsLoggedIn()).Returns(false);
+			httpContextAccessor.Setup(h => h.IsLoggedIn()).Returns(true);
 
 			return httpContextAccessor.Object;
 		}
@@ -56,7 +56,7 @@ namespace uPersonalize.Tests
 			}
 			else if (withValues)
 			{
-				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Device_Type)).Returns(Task.FromResult("Desktop_Windows"));
+				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Device_Type)).Returns(Task.FromResult("Windows"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page)).Returns(Task.FromResult("10:1"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page_Count)).Returns(Task.FromResult("10:1"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Event_Triggered)).Returns(Task.FromResult("testEvent:1"));

@@ -68,12 +68,12 @@ namespace uPersonalize.Services
 				case PersonalizationConditions.IP_Address:
 					if (!string.IsNullOrWhiteSpace(filter.IpAddress))
 					{
-						var ipAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? string.Empty;
+						var clientIPAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress;
 
-						if (Regex.IsMatch(filter.IpAddress, Conditions.IP) && !IPAddress.IsLoopback(_httpContextAccessor.HttpContext.Connection.RemoteIpAddress))
+						if (Regex.IsMatch(filter.IpAddress, Conditions.IP) && !IPAddress.IsLoopback(clientIPAddress))
 						{
 							var ipToMatch = filter.IpAddress.Split('.');
-							var ipAddressSegments = ipAddress.Split('.');
+							var ipAddressSegments = clientIPAddress.ToString().Split('.');
 
 							for (int i = 0; i < 4; i++)
 							{
