@@ -33,10 +33,10 @@ namespace uPersonalize.Tests
 			return httpContextAccessor.Object;
 		}
 
-		public static IMemberManager MemberManager()
+		public static IMemberManager MemberManager(bool returnValue)
 		{
 			var httpContextAccessor = new Mock<IMemberManager>();
-			httpContextAccessor.Setup(h => h.IsLoggedIn()).Returns(true);
+			httpContextAccessor.Setup(h => h.IsLoggedIn()).Returns(returnValue);
 
 			return httpContextAccessor.Object;
 		}
