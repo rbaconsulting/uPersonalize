@@ -487,3 +487,4 @@ $RECYCLE.BIN/
 **/wwwroot/umbraco/
 
 **/App_Plugins/
+**/Views/Partials/grid/uPersonalize.cshtml

@@ -1,19 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", function (event) {
-	var rows = document.querySelectorAll('.umb-tools.row-tools .cell-tools-edit.row-tool');
-
-	var html = `<div class="cell-tools-edit row-tool" ng-if="hasSettings">
-										<button type="button" class="btn-icon" ng-click="editGridItemSettings(row, 'row')" localize="title" title="@grid_settings">
-											<umb-icon icon="icon-app"></umb-icon>
-											<span class="sr-only">
-												<localize key="grid_settings">Settings</localize>
-											</span>
-										</button>
-									</div>`;
-});
-
-
-
-angular.module("umbraco").controller("uPersonalize.PropertyEditors.GridController", function (
+﻿angular.module("umbraco").controller("uPersonalize.PropertyEditors.GridController", function (
 	$scope,
 	localizationService,
 	gridService,

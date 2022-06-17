@@ -11,6 +11,7 @@
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
 		<Copyright></Copyright>
 		<Description>An app plugin adding personalization options to the Umbraco CMS.</Description>
+		<PackageIcon>logo.png</PackageIcon>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -40,5 +41,12 @@
 		<PackageReference Include="Umbraco.Cms.Core" Version="9.4.3" />
 		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.4.3" />
 		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.4.3" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>

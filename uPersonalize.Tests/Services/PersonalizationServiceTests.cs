@@ -20,7 +20,7 @@ namespace uPersonalize.Tests.Services
 			SetupBase();
 
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(),
+																 MoqProvider.MemberManager(false),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(true, false));
 			Random = new Random();
@@ -43,6 +43,11 @@ namespace uPersonalize.Tests.Services
 		[TestMethod]
 		public async Task IsMatch_Valid_Filter_Match()
 		{
+			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+																 MoqProvider.MemberManager(true),
+																 MoqProvider.HttpContextAccessor(HttpContext),
+																 MoqProvider.PersonalizationCookieManager(true, false));
+
 			HttpContext.Connection.RemoteIpAddress = IPAddress.None;
 
 			foreach (PersonalizationConditions personalizationCondition in Enum.GetValues(typeof(PersonalizationConditions)))
@@ -74,7 +79,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Valid_Filter_Key_Value_List_Match(PersonalizationConditions personalizationCondition)
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(),
+																 MoqProvider.MemberManager(true),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, true));
 
@@ -116,7 +121,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Valid_Filter_Key_Value_List_No_Match(PersonalizationConditions personalizationCondition)
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(),
+																 MoqProvider.MemberManager(true),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, true));
 
@@ -154,7 +159,7 @@ namespace uPersonalize.Tests.Services
 		public async Task IsMatch_Empty_Cookies()
 		{
 			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(),
+																 MoqProvider.MemberManager(false),
 																 MoqProvider.HttpContextAccessor(HttpContext),
 																 MoqProvider.PersonalizationCookieManager(false, false));
 
