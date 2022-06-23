@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml;
-using Umbraco.Cms.Core.Packaging;
+﻿using Umbraco.Cms.Core.Packaging;
 
 namespace uPersonalize.Migrations
 {

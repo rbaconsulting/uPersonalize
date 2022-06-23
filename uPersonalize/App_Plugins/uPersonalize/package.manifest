@@ -2,7 +2,7 @@
 	"dashboards": [
 		{
 			"alias": "uPersonalizeSettingsDashboard",
-			"view": "/App_Plugins/uPersonalize/dashboards/settings/uPersonalize-settings.html",
+			"view": "/App_Plugins/uPersonalize/dashboards/uPersonalizeSettings.html",
 			"sections": [ "settings" ],
 			"access": [
 				{ "grant": "admin" }
@@ -16,13 +16,13 @@
 			"group": "uPersonalize",
 			"isParameterEditor": true,
 			"editor": {
-				"view": "/App_Plugins/uPersonalize/propertyeditors/settings.html"
+				"view": "/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButton.html"
 			}
 		}
 	],
 	"javascript": [
-		"/App_Plugins/uPersonalize/dashboards/settings/uPersonalize.settings.controller.js",
-		"/App_Plugins/uPersonalize/propertyeditors/settings.controller.js",
-		"/App_Plugins/uPersonalize/dialogs/config.controller.js"
+		"/App_Plugins/uPersonalize/dashboards/uPersonalizeSettingsController.js",
+		"/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButtonController.js",
+		"/App_Plugins/uPersonalize/dialogs/uPersonalizeDialogController.js"
 	]
 }

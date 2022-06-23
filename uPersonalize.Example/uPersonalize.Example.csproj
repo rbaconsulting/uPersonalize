@@ -5,10 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Remove="bundleconfig.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
         <PackageReference Include="Umbraco.Cms" Version="9.4.3" />
     </ItemGroup>
@@ -17,12 +13,9 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
         <PackageReference Include="Umbraco.Cms.Core" Version="9.4.3" />
-        <PackageReference Include="uPersonalize" Version="0.4.10" />
+        <PackageReference Include="uPersonalize" Version="0.0.4" />
         <PackageReference Include="uSync" Version="9.4.0" />
         <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="bundleconfig.json" />
     </ItemGroup>
 
 
