@@ -12,6 +12,8 @@ using uPersonalize.Constants;
 using Microsoft.Extensions.Primitives;
 using Umbraco.Cms.Core.Security;
 using static uPersonalize.Constants.RegexRules;
+using Lucene.Net.Search;
+using Umbraco.Cms.Web.Common;
 
 namespace uPersonalize.Services
 {
@@ -110,7 +112,7 @@ namespace uPersonalize.Services
 					{
 						Parallel.ForEach(visitedPages.Split(','), pair =>
 						{
-							if (!string.IsNullOrWhiteSpace(pair) && pair.StartsWith(compareTo))
+							if (compareTo.Contains(pair.Split(':').FirstOrDefault()))
 							{
 								if (filter.Condition == PersonalizationConditions.Visited_Page_Count || filter.Condition == PersonalizationConditions.Event_Triggered_Count)
 								{
