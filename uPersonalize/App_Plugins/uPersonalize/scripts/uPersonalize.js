@@ -10,12 +10,12 @@
 		return response;
 	}
 
-	static async trackUser(pageId) {
-		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/trackUser/${pageId}`, 'POST', null);
+	static async onPageLoad(pageId) {
+		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/onPageLoad/${pageId}`, 'POST', null);
 	}
 
-	static async isMatch(personalizationFilter, cssSelector, additionalClasses) {
-		let isMatch = await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/isMatch`, 'POST', personalizationFilter);
+	static async doesFilterMatch(personalizationFilter, cssSelector, additionalClasses) {
+		let isMatch = await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/doesFilterMatch`, 'POST', personalizationFilter);
 
 		if (isMatch) {
 			var elements = document.querySelectorAll(cssSelector);
@@ -58,8 +58,8 @@
 		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/triggerEvent/${eventName}`, 'POST', null);
 	}
 
-	static async visitPage(pageId) {
-		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/pageVisit/${pageId}`, 'POST', null);
+	static async recordPageLoad(pageId) {
+		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/recordPageLoad/${pageId}`, 'POST', null);
 	}
 
 	static async getTriggeredEventCount(eventName) {
@@ -68,8 +68,8 @@
 		return eventCount;
 	}
 
-	static async getPageVisitCount(pageId) {
-		let pageCount = await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/getPageVisitCount/${pageId}`, 'GET', null);
+	static async getPageLoadCount(pageId) {
+		let pageCount = await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/getPageLoadCount/${pageId}`, 'GET', null);
 
 		return pageCount;
 	}

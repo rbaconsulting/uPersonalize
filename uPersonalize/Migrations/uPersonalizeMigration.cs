@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Xml;
 using System.Xml.Linq;
 using Umbraco.Cms.Core.Configuration.Models;
@@ -13,9 +15,11 @@ namespace uPersonalize.Migrations
 {
 	public class uPersonalizeMigration : PackageMigrationBase
 	{
+		private readonly ILogger<uPersonalizeMigration> _logger;
 		private readonly IPackagingService _packagingService;
 
 		public uPersonalizeMigration(
+			ILogger<uPersonalizeMigration> logger,
 			IPackagingService packagingService,
 			IMediaService mediaService,
 			MediaFileManager mediaFileManager,
@@ -26,18 +30,24 @@ namespace uPersonalize.Migrations
 			IOptions<PackageMigrationSettings> packageMigrationsSettings)
 			: base(packagingService, mediaService, mediaFileManager, mediaUrlGenerators, shortStringHelper, contentTypeBaseServiceProvider, context, packageMigrationsSettings)
 		{
-
+			_logger = logger;
 			_packagingService = packagingService;
 		}
 
 		protected override void Migrate()
 		{
-			var reader = XmlReader.Create("./App_Plugins/uPersonalize/package.xml");
+			try
+            {
+				var reader = XmlReader.Create("./App_Plugins/uPersonalize/package.xml");
+				var packageDocument = XDocument.Load(reader);
 
-			var packageDocument = XDocument.Load(reader);
-
-			ImportPackage.FromXmlDataManifest(packageDocument).Do();
-			_packagingService.InstallCompiledPackageData(packageDocument);
-		}
+				ImportPackage.FromXmlDataManifest(packageDocument).Do();
+				_packagingService.InstallCompiledPackageData(packageDocument);
+			}
+			catch(Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+        }
 	}
 }

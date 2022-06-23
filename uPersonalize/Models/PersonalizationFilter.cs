@@ -1,4 +1,14 @@
-﻿using uPersonalize.Enums;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Web;
+using Umbraco.Cms.Web.Common;
+using uPersonalize.Enums;
+using System.Collections.Generic;
+using Lucene.Net.Search;
+using static uPersonalize.Constants.RegexRules;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System;
 
 namespace uPersonalize.Models
 {
@@ -23,6 +33,37 @@ namespace uPersonalize.Models
 			EventName = string.Empty;
 			PageEventCount = 0;
 			AdditionalClasses = string.Empty;
+		}
+
+		public static PersonalizationFilter Create(string json)
+		{
+			return JsonConvert.DeserializeObject<PersonalizationFilter>(json);
+		}
+
+		public bool IsValid()
+		{
+			if(Condition != PersonalizationConditions.Default && Action != PersonalizationActions.Default)
+            {
+				switch (Condition)
+				{
+					case PersonalizationConditions.IP_Address:
+						return DeviceToMatch != DeviceTypes.Default;
+					case PersonalizationConditions.Device_Type:
+						return DeviceToMatch != DeviceTypes.Default;
+					case PersonalizationConditions.Visited_Page:
+					case PersonalizationConditions.Visited_Page_Count:
+						return !string.IsNullOrWhiteSpace(PageId) && PageEventCount > 0;
+					case PersonalizationConditions.Event_Triggered:
+					case PersonalizationConditions.Event_Triggered_Count:
+						return !string.IsNullOrWhiteSpace(EventName) && PageEventCount > 0;
+					case PersonalizationConditions.Logged_In:
+						return true;
+					default:
+						break;
+				}
+			}		
+
+			return false;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("uPersonalize.PropertyEditors.GridController", function ($scope, localizationService, editorService) {
+﻿angular.module("umbraco").controller("uPersonalizeButtonController", function ($scope, localizationService, editorService) {
 	var config = $scope.model.value ? JSON.parse($scope.model.value) : {
 		condition: '',
 		action: '',
@@ -14,7 +14,7 @@
 		$scope.editGridItemSettings = function () {
 			var dialogOptions = {
 				title: "uPersonalize",
-				view: "/App_Plugins/uPersonalize/dialogs/config.html",
+				view: "/App_Plugins/uPersonalize/dialogs/uPersonalizeDialog.html",
 				size: "small",
 				uPersonalizeConfig: config,
 				submit: function (model) {
@@ -30,6 +30,4 @@
 			editorService.open(dialogOptions);
 		};
 	}
-
-
 });

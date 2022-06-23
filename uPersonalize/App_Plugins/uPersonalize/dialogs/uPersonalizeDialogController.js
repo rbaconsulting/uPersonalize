@@ -1,4 +1,14 @@
-﻿angular.module("umbraco").controller("uPersonalize.GridPrevalueEditor.ConfigController", function ($scope, entityResource, iconHelper, editorService) {
+﻿angular.module("umbraco").controller("uPersonalizeDialogController", function ($scope, entityResource, iconHelper, editorService) {
+    $scope.renderModel = [];
+    $scope.ids = [];
+
+    var config = {
+        multiPicker: true,
+        entityType: "Document",
+        type: "content",
+        treeAlias: "content"
+    };
+
     var vm = this;
 
     vm.uPersonalizeConfig = $scope.model.uPersonalizeConfig;
@@ -73,9 +83,6 @@
     ];
 
     vm.submit = function () {
-        //treepicker
-        vm.uPersonalizeConfig.pageId = trim($scope.ids.join(), ",");
-
         if ($scope.model && $scope.model.submit) {
             $scope.model.submit(vm.uPersonalizeConfig);
         }
@@ -87,57 +94,24 @@
         }
     }
 
-
-
-    $scope.renderModel = [];
-    $scope.ids = [];
-
-    $scope.allowRemove = true;
-    $scope.allowEdit = true;
-    $scope.sortable = false;
-
-    var config = {
-        multiPicker: true,
-        entityType: "Document",
-        type: "content",
-        treeAlias: "content",
-        idType: "udi"
-    };
-
-    if (vm.uPersonalizeConfig.pageId) {
-        if (!Array.isArray(vm.uPersonalizeConfig.pageId)) {
-            $scope.ids = vm.uPersonalizeConfig.pageId.split(",");
-        } else {
-            $scope.ids.push(vm.uPersonalizeConfig.pageId);
-        }
-
-        entityResource.getByIds($scope.ids, config.entityType).then(function (data) {
-            _.each(data, function (item, i) {
-
-                item.icon = iconHelper.convertFromLegacyIcon(item.icon);
-                $scope.renderModel.push({ name: item.name, id: item.id, icon: item.icon, udi: item.udi });
-
-                // store the index of the new item in the renderModel collection so we can find it again
-                var itemRenderIndex = $scope.renderModel.length - 1;
-                // get and update the path for the picked node
-                entityResource.getUrl(item.id, config.entityType).then(function (data) {
-                    $scope.renderModel[itemRenderIndex].path = data;
-                });
-
-            });
-        });
-    }
-
     $scope.openTreePicker = function () {
         var treePicker = config;
         treePicker.section = config.type;
 
         treePicker.submit = function (model) {
-            if (config.multiPicker) {
-                populate(model.selection);
+            var data = config.multiPicker ? model.selection : model.selection[0];
+
+            if (Utilities.isArray(data)) {
+                _.each(data, function (item, i) {
+                    $scope.add(item);
+                });
             } else {
-                populate(model.selection[0]);
+                $scope.clear();
+                $scope.add(data);
             }
+
+            vm.uPersonalizeConfig.pageId = trim($scope.ids.join(), ",");
+
             editorService.close();
         };
 
@@ -181,14 +155,25 @@
         return str.replace(rgxtrim, '');
     }
 
-    function populate(data) {
-        if (Utilities.isArray(data)) {
-            _.each(data, function (item, i) {
-                $scope.add(item);
-            });
+    if (vm.uPersonalizeConfig.pageId && vm.uPersonalizeConfig.pageId.length > 0) {
+        if (!Array.isArray(vm.uPersonalizeConfig.pageId)) {
+            $scope.ids = vm.uPersonalizeConfig.pageId.split(",");
         } else {
-            $scope.clear();
-            $scope.add(data);
+            $scope.ids.push(vm.uPersonalizeConfig.pageId);
         }
+
+        entityResource.getByIds($scope.ids, config.entityType).then(function (data) {
+            _.each(data, function (item, i) {
+                item.icon = iconHelper.convertFromLegacyIcon(item.icon);
+                $scope.renderModel.push({ name: item.name, id: item.id, icon: item.icon, udi: item.udi });
+
+                // store the index of the new item in the renderModel collection so we can find it again
+                var itemRenderIndex = $scope.renderModel.length - 1;
+                // get and update the path for the picked node
+                entityResource.getUrl(item.id, config.entityType).then(function (data) {
+                    $scope.renderModel[itemRenderIndex].path = data;
+                });
+            });
+        });
     }
 });

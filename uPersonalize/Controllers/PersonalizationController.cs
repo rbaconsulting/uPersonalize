@@ -21,17 +21,17 @@ namespace uPersonalize.Controllers
 		}
 
 		[HttpPost]
-		[Route("umbraco/uPersonalize/Personalization/TrackUser/{pageId}")]
-		public async Task TrackUser(int pageId)
+		[Route("umbraco/uPersonalize/Personalization/OnPageLoad/{pageId}")]
+		public async Task OnPageLoad(int pageId)
 		{
-			await _personalizationService.TrackUser(pageId);
+			await _personalizationService.OnPageLoad(pageId);
 		}
 
 		[HttpPost]
-		[Route("umbraco/uPersonalize/Personalization/IsMatch")]
-		public async Task<bool> IsMatch([FromBody] PersonalizationFilter filter)
+		[Route("umbraco/uPersonalize/Personalization/DoesFilterMatch")]
+		public async Task<bool> DoesFilterMatch([FromBody] PersonalizationFilter filter)
 		{
-			return await _personalizationService.IsMatch(filter);
+			return await _personalizationService.DoesFilterMatch(filter);
 		}
 
 		/// <summary>
@@ -43,7 +43,7 @@ namespace uPersonalize.Controllers
 		{
 			if (!string.IsNullOrWhiteSpace(eventName))
 			{
-				await _personalizationService.TryTriggerEvent(eventName);
+				await _personalizationService.TriggerEvent(eventName);
 			}
 		}
 
@@ -51,12 +51,12 @@ namespace uPersonalize.Controllers
 		/// ~/Umbraco/uPersonalize/Personalization/PageVisit
 		/// </summary>
 		[HttpPost]
-		[Route("umbraco/uPersonalize/Personalization/PageVisit/{pageId}")]
-		public async Task PageVisit(string pageId)
+		[Route("umbraco/uPersonalize/Personalization/RecordPageLoad/{pageId}")]
+		public async Task RecordPageLoad(string pageId)
 		{
 			if (!string.IsNullOrWhiteSpace(pageId))
 			{
-				await _personalizationService.TryPageVisit(pageId);
+				await _personalizationService.RecordPageLoad(pageId);
 			}
 		}
 
@@ -74,10 +74,10 @@ namespace uPersonalize.Controllers
 		/// ~/Umbraco/uPersonalize/Personalization/PageVisit
 		/// </summary>
 		[HttpGet]
-		[Route("umbraco/uPersonalize/Personalization/GetPageVisitCount/{pageId}")]
-		public async Task<int> GetPageVisitCount(string pageId)
+		[Route("umbraco/uPersonalize/Personalization/GetPageLoadCount/{pageId}")]
+		public async Task<int> GetPageLoadCount(string pageId)
 		{
-			return await _personalizationService.GetPageVisitCount(pageId);
+			return await _personalizationService.GetPageLoadCount(pageId);
 		}
 	}
 }

@@ -5,7 +5,6 @@
 @using uPersonalize.Enums
 @using uPersonalize.Models
 @using uPersonalize.Interfaces
-@using uPersonalize.Extensions
 @using System.Net
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<dynamic>
 @inject IPersonalizationService PersonalizationService
@@ -81,7 +80,7 @@
     {
         var attrs = new List<string>();
         JObject cfg = contentItem.config;
-        var filter = new PersonalizationFilter();
+        PersonalizationFilter filter = null;
 
         if (cfg != null)
         {
@@ -89,7 +88,7 @@
             {
                 if(property.Name.StartsWith("uPersonalize"))
                 {
-                    filter = uPersonalizeExtensions.MapJPropertyToFilter(property, Umbraco);
+                    filter = PersonalizationFilter.Create(property.Value.ToString());
                 }
                 else
                 {
@@ -99,8 +98,9 @@
             }
         }
 
-        JObject style = contentItem.styles;
+        attrs = await PersonalizationService.ApplyFilterToGrid(attrs, filter);
 
+        JObject style = contentItem.styles;
         if (style != null)
         {
             var cssVals = new List<string>();
@@ -116,8 +116,6 @@
             if (cssVals.Any())
                 attrs.Add("style=\"" + HttpUtility.HtmlAttributeEncode(string.Join(" ", cssVals)) + "\"");
         }
-
-        attrs.ApplyFilterToAttributes(filter, await PersonalizationService.IsMatch(filter));
 
         return new HtmlString(string.Join(" ", attrs));
     }
