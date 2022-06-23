@@ -89,7 +89,7 @@
             {
                 if(property.Name.StartsWith("uPersonalize"))
                 {
-                    filter.MapJPropertyToFilter(property, Umbraco);
+                    filter = uPersonalizeExtensions.MapJPropertyToFilter(property, Umbraco);
                 }
                 else
                 {
