@@ -13,6 +13,10 @@ uPersonalize is an app plugin adding personalization options to Umbraco. The goa
 content can be shown to different website users. The app plugin was intended to be used by the grid layout editor, however, the javascript and C# API can
 be extended to be used outside of the grid layout editor.
 
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/104644210/175616952-333ddd5f-1691-4e9a-a541-763b3532336c.gif)
+
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/104644210/175616961-af252557-3eb2-4844-b9d1-4fb9758a5bf3.gif)
+
 uPersonalize currently suppports the following personalization conditions:
 - Whether a client's IP Address is similar
 - Whether a client's device matches a specific type
