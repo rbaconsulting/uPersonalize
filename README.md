@@ -9,13 +9,10 @@
 
 ## Overview
 
-uPersonalize is an app plugin adding personalization options to Umbraco. The goal is to allow content authors to easily personalize content, so that variations of
-content can be shown to different website users. The app plugin was intended to be used by the grid layout editor, however, the javascript and C# API can
-be extended to be used outside of the grid layout editor.
+uPersonalize is an Umbraco app plugin for personalizing your website in a content friendly way. With uPersonalize, backoffice users are able to configure specific components to render differently on a page depending on conditions sepcific to individual users on your website. For example, below is a demo of using the grid layout to hide text if a user has been to the home page 10 times. Installing uPersonalize includes a grid layout datatype, a property editor, and a settings dashboard to configure security settings. However, uPersonalize also provides C# and Javsacript service classes that can be utilized for custom implementations.
 
-![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/104644210/175616952-333ddd5f-1691-4e9a-a541-763b3532336c.gif)
-
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/104644210/175616961-af252557-3eb2-4844-b9d1-4fb9758a5bf3.gif)
+![grid-demo-backoffice](https://user-images.githubusercontent.com/104644210/175617132-f2ba9fb1-2ab3-4339-9be6-2f7cc9ed9cb2.gif)
+![grid-demo](https://user-images.githubusercontent.com/104644210/175617138-8baf37dc-3b2a-4502-8a0d-c09cfc99cf38.gif)
 
 uPersonalize currently suppports the following personalization conditions:
 - Whether a client's IP Address is similar
@@ -24,12 +21,12 @@ uPersonalize currently suppports the following personalization conditions:
 - Whether a page has been visited X number of time
 - Whether an event has been triggered
 - Whether an event has been triggered X number of time
+- User's logged in status using OOTB member functionality
 
-
-Once a condition is met, the following actions can be taken within the grid layout editor:
+Once a condition has been met, the following actions are currently supported:
 - Hide a specific element
 - Show a specific element
-- Apply additional html classes to an element
+- Apply additional CSS classes to an element
 
 
 For further documentation on how to install and use uPersonalize, [checkout out our wiki pages](../../wiki).
