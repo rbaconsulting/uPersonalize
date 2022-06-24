@@ -11,7 +11,7 @@
 
 uPersonalize is an Umbraco app plugin for personalizing your website in a content friendly way. With uPersonalize, backoffice users are able to configure specific components to render differently on a page depending on conditions sepcific to individual users on your website. For example, below is a demo of using the grid layout to hide text if a user has been to the home page 10 times. Installing uPersonalize includes a grid layout datatype, a property editor, and a settings dashboard to configure security settings. However, uPersonalize also provides C# and Javsacript service classes that can be utilized for custom implementations.
 
-![grid-demo-backoffice](https://user-images.githubusercontent.com/104644210/175617132-f2ba9fb1-2ab3-4339-9be6-2f7cc9ed9cb2.gif)
+![grid-demo-backoffice](https://user-images.githubusercontent.com/104644210/175646664-f32f99f5-0274-4fc5-a6c0-3648e5741109.gif)
 ![grid-demo](https://user-images.githubusercontent.com/104644210/175617138-8baf37dc-3b2a-4502-8a0d-c09cfc99cf38.gif)
 
 uPersonalize currently suppports the following personalization conditions:
