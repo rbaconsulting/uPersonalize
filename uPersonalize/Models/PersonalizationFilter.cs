@@ -1,14 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web;
-using Umbraco.Cms.Web.Common;
+﻿using Newtonsoft.Json;
 using uPersonalize.Enums;
-using System.Collections.Generic;
-using Lucene.Net.Search;
-using static uPersonalize.Constants.RegexRules;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System;
 
 namespace uPersonalize.Models
 {
@@ -35,10 +26,7 @@ namespace uPersonalize.Models
 			AdditionalClasses = string.Empty;
 		}
 
-		public static PersonalizationFilter Create(string json)
-		{
-			return JsonConvert.DeserializeObject<PersonalizationFilter>(json);
-		}
+		public static PersonalizationFilter Create(string json) => !string.IsNullOrWhiteSpace(json) ? JsonConvert.DeserializeObject<PersonalizationFilter>(json) : new PersonalizationFilter();
 
 		public bool IsValid()
 		{
@@ -46,20 +34,14 @@ namespace uPersonalize.Models
             {
 				switch (Condition)
 				{
-					case PersonalizationConditions.IP_Address:
-						return DeviceToMatch != DeviceTypes.Default;
-					case PersonalizationConditions.Device_Type:
-						return DeviceToMatch != DeviceTypes.Default;
-					case PersonalizationConditions.Visited_Page:
-					case PersonalizationConditions.Visited_Page_Count:
-						return !string.IsNullOrWhiteSpace(PageId) && PageEventCount > 0;
-					case PersonalizationConditions.Event_Triggered:
-					case PersonalizationConditions.Event_Triggered_Count:
-						return !string.IsNullOrWhiteSpace(EventName) && PageEventCount > 0;
-					case PersonalizationConditions.Logged_In:
-						return true;
-					default:
-						break;
+					case PersonalizationConditions.IP_Address: return DeviceToMatch != DeviceTypes.Default;
+					case PersonalizationConditions.Device_Type: return DeviceToMatch != DeviceTypes.Default;
+					case PersonalizationConditions.Visited_Page: return !string.IsNullOrWhiteSpace(PageId);
+					case PersonalizationConditions.Visited_Page_Count: return !string.IsNullOrWhiteSpace(PageId) && PageEventCount > 0;
+					case PersonalizationConditions.Event_Triggered: return !string.IsNullOrWhiteSpace(EventName);
+					case PersonalizationConditions.Event_Triggered_Count: return !string.IsNullOrWhiteSpace(EventName) && PageEventCount > 0;
+					case PersonalizationConditions.Logged_In: return true;
+					default: break;
 				}
 			}		
 
