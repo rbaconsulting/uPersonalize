@@ -3,7 +3,7 @@
 @{
     Layout = null;
 
-    await PersonalizationService.TrackUser(Umbraco.AssignedContentItem.Id);
+    await PersonalizationService.OnPageLoad(Umbraco.AssignedContentItem.Id);
 
     var culture = Model.GetCultureFromDomains();
 }
@@ -11,11 +11,11 @@
 <!DOCTYPE HTML>
 <html lang="@culture">
     <head>
-        <script async src="~/../App_Plugins/uPersonalize/personalization.js"></script>
+        <script async src="~/../App_Plugins/uPersonalize/scripts/personalization.js"></script>
 
-        <link rel="stylesheet" href="~/../App_Plugins/uPersonalize/uPersonalize.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="~/../App_Plugins/uPersonalize/styles/uPersonalize.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
-            <link rel="stylesheet" href="~/../App_Plugins/uPersonalize/uPersonalize.min.css">
+            <link rel="stylesheet" href="~/../App_Plugins/uPersonalize/styles/uPersonalize.min.css">
         </noscript>
 
         <link rel="stylesheet" href="~/css/main.min.css" async>
@@ -25,13 +25,8 @@
     </head>
     <body>
 
-        <h1>You have triggered event "testEvent" @await PersonalizationService.GetTriggeredEventCount("testEvent") times!</h1>
-        <h1>You have visited this page @await PersonalizationService.GetPageVisitCount(Umbraco.AssignedContentItem.Id.ToString()) times!</h1>
+        <h1>You have visited this page @await PersonalizationService.GetPageLoadCount(Umbraco.AssignedContentItem.Id.ToString()) times!</h1>
 
         @RenderBody()
-
-        <p class="test-class">This is a test</p>
-
-        <a href="/test" class="uPersonalizeButton" data-upersonalize-event-name="testEvent">Test Button</a>
     </body>
 </html>
