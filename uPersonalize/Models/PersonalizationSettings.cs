@@ -36,17 +36,39 @@ namespace uPersonalize.Models
 			};
 		}
 
-		public static PersonalizationSettings Load()
-        {
-			var lines = File.ReadAllText(_filePath);
+		public static IPersonalizationSettings Create(string domain, bool secure, SameSiteMode sameSite, TimeSpan maxAge)
+		{
+			return new PersonalizationSettings()
+			{
+				Domain = domain,
+				Secure = secure,
+				SameSite = sameSite,
+				MaxAge = maxAge
+			};
+		}
 
-			return JsonConvert.DeserializeObject<PersonalizationSettings>(lines);
+		public static IPersonalizationSettings Load()
+		{
+			if (File.Exists(_filePath))
+			{
+				var settingsJson = File.ReadAllText(_filePath);
+
+				return JsonConvert.DeserializeObject<PersonalizationSettings>(settingsJson);
+			}
+			else
+			{
+				var newSettings = Create(string.Empty, true, SameSiteMode.Strict, TimeSpan.FromDays(365));
+
+				newSettings.Save().Wait();
+
+				return newSettings;
+			}
 		}
 
 		public async Task Save()
 		{
 			var fileData = JsonConvert.SerializeObject(this);
-			
+
 			await File.WriteAllTextAsync(_filePath, fileData);
 		}
 	}

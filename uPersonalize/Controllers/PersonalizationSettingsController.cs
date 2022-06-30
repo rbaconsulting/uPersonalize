@@ -18,18 +18,18 @@ namespace uPersonalize.Controllers
 	public class PersonalizationSettingsController : UmbracoAuthorizedApiController
 	{
 		private ILogger<PersonalizationSettingsController> Logger { get; }
-		private IPersonalizationSettings PersonalizationSettings { get; }
+		private IPersonalizationSettings _uPersonalizeSettings { get; set; }
 
-		public PersonalizationSettingsController(ILogger<PersonalizationSettingsController> logger, IPersonalizationSettings personalizationSettings)
+		public PersonalizationSettingsController(ILogger<PersonalizationSettingsController> logger, IPersonalizationSettings uPersonalizeSettings)
 		{
 			Logger = logger;
-			PersonalizationSettings = personalizationSettings;
+			_uPersonalizeSettings = uPersonalizeSettings;
 		}
 
 		[HttpGet]
 		public IPersonalizationSettings GetPersonalizationSettings()
 		{
-			return PersonalizationSettings;
+			return _uPersonalizeSettings;
 		}
 
 		[HttpPost]
@@ -37,12 +37,9 @@ namespace uPersonalize.Controllers
 		{
 			try
 			{
-				PersonalizationSettings.Domain = personalizationSettings?.Domain ?? string.Empty;
-				PersonalizationSettings.Secure = personalizationSettings?.Secure ?? false;
-				PersonalizationSettings.SameSite = personalizationSettings?.SameSite ?? SameSiteMode.Unspecified;
-				PersonalizationSettings.MaxAge = personalizationSettings?.MaxAge ?? TimeSpan.FromDays(365);
+				_uPersonalizeSettings = PersonalizationSettings.Create(personalizationSettings?.Domain, personalizationSettings.Secure, personalizationSettings.SameSite, personalizationSettings.MaxAge);
 
-				await PersonalizationSettings.Save();
+				await _uPersonalizeSettings.Save();
 
 				return Ok();
 			}
