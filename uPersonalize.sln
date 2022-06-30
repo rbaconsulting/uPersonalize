@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{CDD090CB-7706-467A-805E-7F5EB79D9F13}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\ci-build.yml = .github\workflows\ci-build.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		.github\workflows\package-uPersonalize.yml = .github\workflows\package-uPersonalize.yml
 	EndProjectSection
 EndProject

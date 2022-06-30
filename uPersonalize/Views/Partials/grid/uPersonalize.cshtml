@@ -21,7 +21,7 @@
                 <div class="grid-section">
                     @foreach (var row in section.rows)
                     {
-                        renderRow(row, true);
+                        await renderRow(row, true);
                     }
                 </div>
             }
@@ -36,7 +36,7 @@
                             <div class="col-md-@sec.grid column">
                                 @foreach (var row in sec.rows)
                                 {
-                                    renderRow(row, false);
+                                    await renderRow(row, false);
                                 }
                             </div>
                         </div>

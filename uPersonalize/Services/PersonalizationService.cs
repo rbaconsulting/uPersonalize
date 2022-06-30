@@ -14,6 +14,7 @@ using Umbraco.Cms.Core.Security;
 using static uPersonalize.Constants.RegexRules;
 using System.Web;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace uPersonalize.Services
 {
@@ -218,15 +219,14 @@ namespace uPersonalize.Services
 			if (!string.IsNullOrWhiteSpace(eventName) && Regex.IsMatch(eventName, Events.Name))
 			{
 				var cookieValue = await _cookieManager.GetCookie(PersonalizationConditions.Event_Triggered);
-				var regex = new Regex($"{eventName}:\\d*");
 
-				if (!string.IsNullOrWhiteSpace(cookieValue))
+				if (!string.IsNullOrWhiteSpace(cookieValue) && cookieValue.Contains($"{eventName}:"))
 				{
-					var match = regex.Match(cookieValue);
+					var eventMatch = cookieValue.Split(',').FirstOrDefault(i => i.StartsWith($"{eventName}:"));
 
-					if (match.Success)
+					if (!string.IsNullOrWhiteSpace(eventMatch))
 					{
-						var countString = match.Value.Split(":")[1];
+						var countString = eventMatch.Split(":")[1];
 
 						return int.Parse(countString);
 					}
@@ -242,15 +242,13 @@ namespace uPersonalize.Services
 			{
 				var cookieValue = await _cookieManager.GetCookie(PersonalizationConditions.Visited_Page);
 
-				var regex = new Regex($"{pageId}:\\d*");
-
-				if (!string.IsNullOrWhiteSpace(cookieValue))
+				if (!string.IsNullOrWhiteSpace(cookieValue) && cookieValue.Contains($"{pageId}:"))
 				{
-					var match = regex.Match(cookieValue);
+					var pageMatch = cookieValue.Split(',').FirstOrDefault(i => i.StartsWith($"{pageId}:"));
 
-					if (match.Success)
+					if (!string.IsNullOrWhiteSpace(pageMatch))
 					{
-						var countString = match.Value.Split(":")[1];
+						var countString = pageMatch.Split(":")[1];
 
 						return int.Parse(countString);
 					}

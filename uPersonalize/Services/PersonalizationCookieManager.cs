@@ -5,6 +5,7 @@ using uPersonalize.Enums.Extensions;
 using uPersonalize.Interfaces;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace uPersonalize.Services
 {
@@ -61,17 +62,15 @@ namespace uPersonalize.Services
 
 				if (!string.IsNullOrWhiteSpace(currentCookieValue))
 				{
-					var regex = new Regex($"{key}:\\d*");
-					var match = regex.Match(currentCookieValue);
-
-					if (match.Success)
+					if (currentCookieValue.Contains($"{key}:"))
 					{
-						var parseResult = int.TryParse(match.Value.Split(':')[1], out int currentCount);
+						var currentValue = currentCookieValue.Split(',').FirstOrDefault(i => i.StartsWith($"{key}:"));
+						var parseResult = int.TryParse(currentValue.Split(':')[1], out int currentCount);
 
 						if (parseResult)
 						{
 							value += currentCount;
-							return await SetCookie(type, regex.Replace(currentCookieValue, $"{key}:{value}"));
+							return await SetCookie(type, currentCookieValue.Replace(currentValue, $"{key}:{value}"));
 						}
 						else
 						{
