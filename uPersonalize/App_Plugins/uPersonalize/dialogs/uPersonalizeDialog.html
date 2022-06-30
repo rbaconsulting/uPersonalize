@@ -1,0 +1,95 @@
+﻿<div ng-controller="uPersonalizeDialogController as vm">
+	<umb-editor-view>
+		<umb-editor-header name="model.title" name-locked="true" hide-alias="true" hide-icon="true" hide-description="true"></umb-editor-header>
+		<umb-editor-container>
+			<ng-form name="gridItemConfigEditor" val-form-manager>
+				<umb-box>
+					<umb-box-header title="Select a condition"></umb-box-header>
+					<umb-box-content>
+						<div>
+							<label class="control-label ng-binding">Match by</label>
+							<div class="umb-property-editor db">
+								<select ng-model="vm.uPersonalizeConfig.condition">
+									<option ng-repeat="node in vm.conditions" value="{{node.value}}">{{node.label}}</option>
+								</select>
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.condition === 'IP_Address'" class="control-label ng-binding">IP Address</label>
+							<div ng-if="vm.uPersonalizeConfig.condition === 'IP_Address'" class="umb-property-editor db">
+								<input type="text" ng-model="vm.uPersonalizeConfig.ipAddress" ng-trim="false" class="umb-property-editor umb-textstring" />
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.condition === 'Device_Type'" class="control-label ng-binding">Device Type</label>
+							<div ng-if="vm.uPersonalizeConfig.condition === 'Device_Type'" class="umb-property-editor db">
+								<select ng-model="vm.uPersonalizeConfig.deviceToMatch">
+									<option ng-repeat="node in vm.devices" value="{{node.value}}">{{node.label}}</option>
+								</select>
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.condition === 'Visited_Page' || vm.uPersonalizeConfig.condition === 'Visited_Page_Count'" class="control-label ng-binding">Page Visited</label>
+							<div ng-if="vm.uPersonalizeConfig.condition === 'Visited_Page' || vm.uPersonalizeConfig.condition === 'Visited_Page_Count'" class="umb-property-editor umb-contentpicker">
+								<div ng-model="renderModel">
+									<umb-node-preview ng-repeat="node in renderModel"
+													  icon="node.icon"
+													  name="node.name"
+													  published="node.published"
+													  description="node.path"
+													  sortable="false"
+													  allow-remove="true"
+													  allow-edit="true"
+													  on-remove="remove($index)"
+													  on-edit="openTreePicker()">
+									</umb-node-preview>
+								</div>
+								<button type="button" class="umb-node-preview-add" ng-click="openTreePicker()">
+									<localize key="general_add">Add</localize>
+								</button>
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.condition === 'Event_Triggered' || vm.uPersonalizeConfig.condition === 'Event_Triggered_Count'" class="control-label ng-binding">Event Name</label>
+							<div ng-if="vm.uPersonalizeConfig.condition === 'Event_Triggered' || vm.uPersonalizeConfig.condition === 'Event_Triggered_Count'" class="umb-property-editor db">
+								<input type="text" ng-model="vm.uPersonalizeConfig.eventName" ng-trim="false" class="umb-property-editor umb-textstring" />
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.condition === 'Visited_Page_Count' || vm.uPersonalizeConfig.condition === 'Event_Triggered_Count'" class="control-label ng-binding">Number of times</label>
+							<div ng-if="vm.uPersonalizeConfig.condition === 'Visited_Page_Count' || vm.uPersonalizeConfig.condition === 'Event_Triggered_Count'">
+								<ng-form name="prevalueNumberForm">
+									<input name="numberField" class="umb-property-editor umb-number" type="number" ng-model="vm.uPersonalizeConfig.pageEventCount" />
+									<span ng-messages="prevalueNumberForm.numberField.$error" show-validation-on-submit>
+										<span class="help-inline" ng-message="number">Not a number</span>
+									</span>
+								</ng-form>
+							</div>
+						</div>
+					</umb-box-content>
+				</umb-box>
+
+				<umb-box>
+					<umb-box-header title="Actions"></umb-box-header>
+					<umb-box-content>
+						<div>
+							<label class="control-label ng-binding">Select an action</label>
+							<div class="umb-property-editor db">
+								<select ng-model="vm.uPersonalizeConfig.action">
+									<option ng-repeat="node in vm.actions" value="{{node.value}}">{{node.label}}</option>
+								</select>
+							</div>
+
+							<label ng-if="vm.uPersonalizeConfig.action === 'Additional_Classes'" class="control-label ng-binding">Additional Styles</label>
+							<div ng-if="vm.uPersonalizeConfig.action === 'Additional_Classes'" class="umb-property-editor db">
+								<input type="text" ng-model="model.value" ng-trim="false" class="umb-property-editor umb-textstring" />
+							</div>
+						</div>
+					</umb-box-content>
+				</umb-box>
+			</ng-form>
+		</umb-editor-container>
+
+		<umb-editor-footer>
+			<umb-editor-footer-content-right>
+				<umb-button type="button" button-style="link" label-key="general_close" shortcut="esc" action="vm.close()"></umb-button>
+				<umb-button type="button" button-style="success" label-key="general_submit" action="vm.submit()"></umb-button>
+			</umb-editor-footer-content-right>
+		</umb-editor-footer>
+	</umb-editor-view>
+</div>

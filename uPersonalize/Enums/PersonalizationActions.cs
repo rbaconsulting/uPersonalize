@@ -5,6 +5,6 @@
 		Default = 0,
 		Hide = 1,
 		Show = 2,
-		Addition_Styles = 3
+		Additional_Classes = 3
 	}
 }

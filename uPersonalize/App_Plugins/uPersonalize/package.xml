@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<umbPackage>
+	<info>
+		<package>
+			<name>uPersonalize</name>
+			<iconUrl></iconUrl>
+			<license url="https://opensource.org/licenses/MPL-2.0">Mozilla Public License 2.0</license>
+			<url>https://github.com/rbaconsulting/uPersonalize</url>
+			<requirements type="strict">
+				<major>9</major>
+				<minor>4</minor>
+				<patch>3</patch>
+			</requirements>
+		</package>
+		<author>
+			<name>Austin Gilbert</name>
+		</author>
+	</info>
+	<files>
+		<folder path="uPersonalize/App_Plugins/uPersonalize" orgPath="App_Plugins/uPersonalize" />
+		<file path="uPersonalize/bin/Release/net5.0/uPersonalize.dll" orgPath="bin/uPersonalize.dll" />
+	</files>
+	<Actions />
+	<control />
+	<DocumentTypes />
+	<Templates />
+	<Stylesheets />
+	<Macros />
+	<DictionaryItems />
+	<Languages />
+	<DataTypes>
+		<DataType Name="Personalized Grid Layout" Id="Umbraco.Grid" Definition="5c560c4b-7a76-4ee2-a091-8d9e04c04f87" DatabaseType="Ntext" Configuration="{&quot;items&quot;:{&quot;styles&quot;:[{&quot;label&quot;:&quot;Set a background image&quot;,&quot;description&quot;:&quot;Set a row background&quot;,&quot;key&quot;:&quot;background-image&quot;,&quot;view&quot;:&quot;imagepicker&quot;,&quot;modifier&quot;:&quot;url({0})&quot;}],&quot;config&quot;:[{&quot;label&quot;:&quot;Class&quot;,&quot;description&quot;:&quot;Set a css class&quot;,&quot;key&quot;:&quot;class&quot;,&quot;view&quot;:&quot;textstring&quot;},{&quot;label&quot;:&quot;uPersonalize Settings&quot;,&quot;description&quot;:&quot;Apply personalization conditions and settings.&quot;,&quot;key&quot;:&quot;uPersonalize-settings&quot;,&quot;view&quot;:&quot;/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButton.html&quot;}],&quot;columns&quot;:12,&quot;templates&quot;:[{&quot;name&quot;:&quot;1 column layout&quot;,&quot;sections&quot;:[{&quot;grid&quot;:12}]},{&quot;name&quot;:&quot;2 column layout&quot;,&quot;sections&quot;:[{&quot;grid&quot;:4},{&quot;grid&quot;:8}]}],&quot;layouts&quot;:[{&quot;label&quot;:&quot;Headline&quot;,&quot;name&quot;:&quot;Headline&quot;,&quot;areas&quot;:[{&quot;grid&quot;:12,&quot;editors&quot;:[&quot;headline&quot;]}]},{&quot;label&quot;:&quot;Article&quot;,&quot;name&quot;:&quot;Article&quot;,&quot;areas&quot;:[{&quot;grid&quot;:4},{&quot;grid&quot;:8}]}]},&quot;rte&quot;:{&quot;toolbar&quot;:[&quot;ace&quot;,&quot;styleselect&quot;,&quot;bold&quot;,&quot;italic&quot;,&quot;alignleft&quot;,&quot;aligncenter&quot;,&quot;alignright&quot;,&quot;bullist&quot;,&quot;numlist&quot;,&quot;outdent&quot;,&quot;indent&quot;,&quot;link&quot;,&quot;umbmediapicker&quot;,&quot;umbmacro&quot;,&quot;umbembeddialog&quot;],&quot;stylesheets&quot;:[],&quot;maxImageSize&quot;:500,&quot;mode&quot;:&quot;classic&quot;},&quot;ignoreUserStartNodes&quot;:false}" Folders="uPersonalize" FolderKeys="d752c346-0583-43a5-8b54-358ea1901594" />
+	</DataTypes>
+</umbPackage>

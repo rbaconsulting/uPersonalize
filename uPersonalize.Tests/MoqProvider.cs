@@ -4,6 +4,7 @@ using uPersonalize.Interfaces;
 using Moq;
 using uPersonalize.Enums;
 using System.Threading.Tasks;
+using Umbraco.Cms.Core.Security;
 
 namespace uPersonalize.Tests
 {
@@ -32,6 +33,14 @@ namespace uPersonalize.Tests
 			return httpContextAccessor.Object;
 		}
 
+		public static IMemberManager MemberManager(bool returnValue)
+		{
+			var httpContextAccessor = new Mock<IMemberManager>();
+			httpContextAccessor.Setup(h => h.IsLoggedIn()).Returns(returnValue);
+
+			return httpContextAccessor.Object;
+		}
+
 		public static IPersonalizationCookieManager PersonalizationCookieManager(bool withValues, bool asList)
 		{
 			var cookieManager = new Mock<IPersonalizationCookieManager>();
@@ -47,7 +56,7 @@ namespace uPersonalize.Tests
 			}
 			else if (withValues)
 			{
-				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Device_Type)).Returns(Task.FromResult("Desktop_Windows"));
+				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Device_Type)).Returns(Task.FromResult("Windows"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page)).Returns(Task.FromResult("10:1"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page_Count)).Returns(Task.FromResult("10:1"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Event_Triggered)).Returns(Task.FromResult("testEvent:1"));

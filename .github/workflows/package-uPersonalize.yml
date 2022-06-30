@@ -25,20 +25,20 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
-    - name: Pack Nuget Package
-      run: dotnet pack -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
-    
     - name: Add nuget.org package source
       run: dotnet nuget add source --username agilbert-rba --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/rbaconsulting/index.json"
-    
-    - name: Publish the github packages
-      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+
+    - name: Pack Nuget Package
+      run: dotnet pack uPersonalize/uPersonalize.csproj -c ${{ env.Configuration }} -o ${{ env.Output_Folder }} /p:Version=${{ env.Release_Version }}
 
     - name: Publish to nuget.org
       run: dotnet nuget push ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} -s 'https://api.nuget.org/v3/index.json'
 
-    - name: Upload to artifact
+    - name: Publish the github packages
+      run: dotnet nuget push "${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg" --source "github"
+
+    - name: Upload nuget to artifact
       uses: actions/upload-artifact@v2
       with:
-        name: uPersonalize-${{ env.Release_Version }}
+        name: uPersonalize-${{ env.Release_Version }} Nuget Package
         path: ${{ env.Output_Folder }}/uPersonalize.${{ env.Release_Version }}.nupkg

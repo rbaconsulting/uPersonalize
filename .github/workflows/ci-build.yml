@@ -1,4 +1,4 @@
-name: Pull Request
+name: CI Build
 on:
   push:
     branches: [ main ]
@@ -16,8 +16,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore uPersonalize/uPersonalize.csproj
     - name: Build
-      run: dotnet build --no-restore -c ${{ env.Configuration }}
+      run: dotnet build uPersonalize/uPersonalize.csproj --no-restore -c ${{ env.Configuration }}
     - name: Test
       run: dotnet test --no-restore --no-build -c ${{ env.Configuration }} --verbosity normal

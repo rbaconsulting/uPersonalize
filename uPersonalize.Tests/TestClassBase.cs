@@ -6,11 +6,6 @@ using System.Web;
 using uPersonalize.Enums;
 using uPersonalize.Enums.Extensions;
 using System.Linq;
-using Microsoft.Extensions.Logging;
-using Moq;
-using uPersonalize.Services;
-using uPersonalize.Interfaces;
-using System.Net;
 
 namespace uPersonalize.Tests
 {
@@ -22,7 +17,7 @@ namespace uPersonalize.Tests
 		{
 			HttpContext = new DefaultHttpContext();
 
-			var cookies = $"{PersonalizationConditions.Device_Type.GetCookieName()}=Desktop_Windows;{PersonalizationConditions.Visited_Page.GetCookieName()}=10:1;{PersonalizationConditions.Event_Triggered.GetCookieName()}=testEvent:1;";
+			var cookies = $"{PersonalizationConditions.Device_Type.GetCookieName()}=Windows;{PersonalizationConditions.Visited_Page.GetCookieName()}=10:1;{PersonalizationConditions.Event_Triggered.GetCookieName()}=testEvent:1;";
 			var requestFeature = new HttpRequestFeature
 			{
 				Headers = new HeaderDictionary

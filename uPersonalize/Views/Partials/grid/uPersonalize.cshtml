@@ -80,51 +80,15 @@
     {
         var attrs = new List<string>();
         JObject cfg = contentItem.config;
-        var filter = new PersonalizationFilter();
-        var additionalClasses = string.Empty;
+        PersonalizationFilter filter = null;
 
         if (cfg != null)
         {
             foreach (JProperty property in cfg.Properties())
             {
-                if(property.Name.Equals("uPersonalize-classes"))
+                if(property.Name.StartsWith("uPersonalize"))
                 {
-                    additionalClasses = property.Value.ToString();
-                }
-                else if(property.Name.Equals("uPersonalize-conditions"))
-                {
-                    filter.Condition = (PersonalizationConditions)Enum.Parse(typeof(PersonalizationConditions), property.Value.ToString());
-                }
-                else if(property.Name.Equals("uPersonalize-actions"))
-                {
-                    filter.Action = (PersonalizationActions)Enum.Parse(typeof(PersonalizationActions), property.Value.ToString());
-                }
-                else if(property.Name.Equals("uPersonalize-ip"))
-                {
-                    filter.IpAddress = property.Value.ToString();
-                }
-                else if(property.Name.Equals("uPersonalize-device"))
-                {
-                    filter.DeviceToMatch = (DeviceTypes)Enum.Parse(typeof(DeviceTypes), property.Value.ToString());
-                }
-                else if(property.Name.Equals("uPersonalize-page-visit"))
-                {
-                    var udi = property.Value.ToString().TrimStart("umb://document/");
-                    var content = Umbraco.Content(udi);
-
-                    filter.PageId = content.Id.ToString();
-                }
-                else if(property.Name.Equals("uPersonalize-event"))
-                {
-                    filter.EventName = property.Value.ToString();
-                }
-                else if(property.Name.Equals("uPersonalize-page-event-count"))
-                {
-                    var parseResult = int.TryParse(property.Value.ToString(), out int pageEventCount);
-                    if(parseResult)
-                    {
-                        filter.PageEventCount = pageEventCount;
-                    }
+                    filter = PersonalizationFilter.Create(property.Value.ToString());
                 }
                 else
                 {
@@ -134,15 +98,12 @@
             }
         }
 
-        var isPersonalizedMatch = await PersonalizationService.IsMatch(filter);
+        attrs = await PersonalizationService.ApplyFilterToGrid(attrs, filter);
 
         JObject style = contentItem.styles;
-
-
         if (style != null)
         {
             var cssVals = new List<string>();
-
             foreach (JProperty property in style.Properties())
             {
                 var propertyValue = property.Value.ToString();
@@ -153,38 +114,7 @@
             }
 
             if (cssVals.Any())
-            {
                 attrs.Add("style=\"" + HttpUtility.HtmlAttributeEncode(string.Join(" ", cssVals)) + "\"");
-            }
-        }
-
-        var existingClasses = attrs.Find(a => a.StartsWith("class="));
-        var personalizedValue = string.Empty;
-
-        if ((isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (!isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
-        {
-            personalizedValue = "d-block";    
-        }
-        else if ((!isPersonalizedMatch && filter.Action == PersonalizationActions.Show) || (isPersonalizedMatch && filter.Action == PersonalizationActions.Hide))
-        {
-            personalizedValue = "d-none";
-        }
-        else if (isPersonalizedMatch && filter.Action == PersonalizationActions.Addition_Styles && !string.IsNullOrWhiteSpace(additionalClasses))
-        {
-            personalizedValue = HttpUtility.HtmlAttributeEncode(additionalClasses);
-        }
-
-        if(!string.IsNullOrWhiteSpace(personalizedValue))
-        {
-            if (!string.IsNullOrWhiteSpace(existingClasses))
-            {
-                var i = attrs.IndexOf(existingClasses);
-                attrs[i] = $"{existingClasses.TrimEnd('\"')} {personalizedValue}\"";
-            }
-            else
-            {
-                attrs.Add($"class=\"{personalizedValue}\"");
-            }
         }
 
         return new HtmlString(string.Join(" ", attrs));

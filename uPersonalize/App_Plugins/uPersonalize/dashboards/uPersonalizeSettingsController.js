@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("uPersonalize.SettingsController", function ($http, $scope, notificationsService) {
+﻿angular.module("umbraco").controller("uPersonalizeSettingsController", function ($http, $scope, notificationsService) {
 	$scope.showLoading = true;
 
 	// could read positions from defaultConfig

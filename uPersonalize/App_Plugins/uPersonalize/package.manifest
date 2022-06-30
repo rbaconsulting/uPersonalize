@@ -1,15 +1,28 @@
 ﻿{
 	"dashboards": [
 		{
-			"alias": "uPersonalizeSettings",
-			"view": "/App_Plugins/uPersonalize/dashboards/settings/uPersonalize-settings.html",
+			"alias": "uPersonalizeSettingsDashboard",
+			"view": "/App_Plugins/uPersonalize/dashboards/uPersonalizeSettings.html",
 			"sections": [ "settings" ],
 			"access": [
 				{ "grant": "admin" }
 			]
 		}
 	],
+	"propertyEditors": [
+		{
+			"alias": "uPersonalizeSettingsOverlay",
+			"name": "uPersonalize Settings Overlay",
+			"group": "uPersonalize",
+			"isParameterEditor": true,
+			"editor": {
+				"view": "/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButton.html"
+			}
+		}
+	],
 	"javascript": [
-		"/App_Plugins/uPersonalize/dashboards/settings/uPersonalize.settings.controller.js"
+		"/App_Plugins/uPersonalize/dashboards/uPersonalizeSettingsController.js",
+		"/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButtonController.js",
+		"/App_Plugins/uPersonalize/dialogs/uPersonalizeDialogController.js"
 	]
 }

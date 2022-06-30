@@ -25,29 +25,35 @@ namespace uPersonalize.Services
 
 		public async Task<string> GetCookie(PersonalizationConditions type)
 		{
-			var cookieName = type.GetCookieName();
-
-			return string.IsNullOrWhiteSpace(cookieName) ? string.Empty :
-				   HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(cookieName, out string cookieValue) ? cookieValue : string.Empty;
-		}
-
-		public async Task<bool> TrySetCookie(PersonalizationConditions type, string cookieValue)
-		{
-			if (!string.IsNullOrWhiteSpace(cookieValue))
-			{
+			return await Task.Run(() =>
+            {
 				var cookieName = type.GetCookieName();
 
-				if (!string.IsNullOrWhiteSpace(cookieName))
-				{
-					HttpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, _cookieOptions);
-					return true;
-				}
-			}
-
-			return false;
+				return string.IsNullOrWhiteSpace(cookieName) ? string.Empty :
+					   HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(cookieName, out string cookieValue) ? cookieValue : string.Empty;
+			});
 		}
 
-		public async Task<bool> TrySetKeyValueListCookie(PersonalizationConditions type, string key, int value = 1)
+		public async Task<bool> SetCookie(PersonalizationConditions type, string cookieValue)
+		{
+			return await Task.Run(() =>
+			{
+				if (!string.IsNullOrWhiteSpace(cookieValue))
+				{
+					var cookieName = type.GetCookieName();
+
+					if (!string.IsNullOrWhiteSpace(cookieName))
+					{
+						HttpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, cookieValue, _cookieOptions);
+						return true;
+					}
+				}
+
+				return false;
+			});
+		}
+
+		public async Task<bool> SetKeyValueListCookie(PersonalizationConditions type, string key, int value = 1)
 		{
 			if (!string.IsNullOrWhiteSpace(key) && (int)type > 2)
 			{
@@ -65,21 +71,21 @@ namespace uPersonalize.Services
 						if (parseResult)
 						{
 							value += currentCount;
-							return await TrySetCookie(type, regex.Replace(currentCookieValue, $"{key}:{value}"));
+							return await SetCookie(type, regex.Replace(currentCookieValue, $"{key}:{value}"));
 						}
 						else
 						{
-							return await TrySetCookie(type, $"{currentCookieValue},{key}:{value}");
+							return await SetCookie(type, $"{currentCookieValue},{key}:{value}");
 						}
 					}
 					else
 					{
-						return await TrySetCookie(type, $"{currentCookieValue},{key}:{value}");
+						return await SetCookie(type, $"{currentCookieValue},{key}:{value}");
 					}
 				}
 				else
 				{
-					return await TrySetCookie(type, $"{key}:{value}");
+					return await SetCookie(type, $"{key}:{value}");
 				}
 			}
 
