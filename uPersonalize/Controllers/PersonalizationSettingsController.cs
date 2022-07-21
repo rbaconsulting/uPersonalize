@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using uPersonalize.Interfaces;
-using uPersonalize.Models;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
+using uPersonalize.Models.Requests;
+using uPersonalize.Constants;
 
 namespace uPersonalize.Controllers
 {
 	/// <summary>
 	/// /umbraco/backoffice/uPersonalize/PersonalizationSettings/{action}
 	/// </summary>
-	[PluginController("uPersonalize")]
+	[PluginController(AppPlugin.Name)]
 	public class PersonalizationSettingsController : UmbracoAuthorizedApiController
 	{
 		private ILogger<PersonalizationSettingsController> Logger { get; }
@@ -33,11 +33,11 @@ namespace uPersonalize.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SavePersonalizationSettings([FromBody] PersonalizationSettings personalizationSettings)
-		{
+		public async Task<IActionResult> SavePersonalizationSettings([FromBody] SavePersonalizationSettings personalizationSettings)
+{
 			try
 			{
-				_uPersonalizeSettings = PersonalizationSettings.Create(personalizationSettings?.Domain, personalizationSettings.Secure, personalizationSettings.SameSite, personalizationSettings.MaxAge);
+				_uPersonalizeSettings.SecureCookieOption = personalizationSettings.SecureCookieOption;
 
 				await _uPersonalizeSettings.Save();
 

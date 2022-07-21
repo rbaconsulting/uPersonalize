@@ -4,13 +4,14 @@ using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using System.Threading.Tasks;
 using uPersonalize.Models;
+using uPersonalize.Constants;
 
 namespace uPersonalize.Controllers
 {
 	/// <summary>
 	/// ~/Umbraco/uPersonalize/Personalization
 	/// </summary>
-	[PluginController("uPersonalize")]
+	[PluginController(AppPlugin.Name)]
 	public class PersonalizationController : UmbracoApiController
 	{
 		private readonly IPersonalizationService _personalizationService;

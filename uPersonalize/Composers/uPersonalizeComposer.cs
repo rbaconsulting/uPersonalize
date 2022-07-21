@@ -4,6 +4,8 @@ using uPersonalize.Models;
 using uPersonalize.Services;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Notifications;
+using uPersonalize.Migrations;
 
 namespace uPersonalize.Composers
 {
@@ -11,8 +13,9 @@ namespace uPersonalize.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.Services.AddSingleton(PersonalizationSettings.Load());
+            builder.AddNotificationHandler<UmbracoApplicationStartingNotification, uPersonalizeDatabaseMigration>();
 
+            builder.Services.AddSingleton<IPersonalizationSettings, PersonalizationSettings>();
             builder.Services.AddScoped<IPersonalizationCookieManager, PersonalizationCookieManager>();
             builder.Services.AddScoped<IPersonalizationService, PersonalizationService>();
         }

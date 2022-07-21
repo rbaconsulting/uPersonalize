@@ -21,13 +21,6 @@
 	getSettings();
 
 	function getSettings() {
-		var data = {
-			Domain: $scope.model.domain,
-			Secure: $scope.model.secure,
-			SameSite: $scope.model.sameSite,
-			MaxAge: `${$scope.model.maxAgeDays}.${$scope.model.maxAgeHours}:${$scope.model.maxAgeMinutes}:00`
-		};
-
 		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationSettings/GetPersonalizationSettings', 'GET', null, getSettingsCallback);
 	}
 
@@ -35,23 +28,23 @@
 		$scope.showLoading = true;
 
 		var data = {
-			Domain: $scope.model.domain,
-			Secure: $scope.model.secure,
-			SameSite: $scope.model.sameSite,
-			MaxAge: `${$scope.model.maxAgeDays}.${$scope.model.maxAgeHours}:${$scope.model.maxAgeMinutes}:00`
+			DomainCookieOption: $scope.model.domain,
+			SecureCookieOption: $scope.model.secure,
+			SameSiteCookieOption: $scope.model.sameSite,
+			MaxAgeCookieOption: `${$scope.model.maxAgeDays}.${$scope.model.maxAgeHours}:${$scope.model.maxAgeMinutes}:00`
 		};
 
 		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationSettings/SavePersonalizationSettings', 'POST', data, saveSettingsCallback);
 	}
 
 	function getSettingsCallback(responseData) {
-		var optionIndex = $scope.sameSiteOptions.indexOf(responseData.SameSite);
+		var optionIndex = $scope.sameSiteOptions.indexOf(responseData.SameSiteCookieOption);
 
 		if (optionIndex > -1) {
 			$scope.model.sameSite = $scope.sameSiteOptions[optionIndex];
 		}
 
-		var daySplit = responseData.MaxAge.split('.');
+		var daySplit = responseData.MaxAgeCookieOption.split('.');
 
 		if (daySplit.length > 0) {
 			$scope.model.maxAgeDays = parseInt(daySplit[0]);
@@ -64,8 +57,8 @@
 			}
 		}
 
-		$scope.model.domain = responseData.Domain;
-		$scope.model.secure = responseData.Secure;
+		$scope.model.domain = responseData.DomainCookieOption;
+		$scope.model.secure = responseData.SecureCookieOption;
 
 		$scope.showLoading = false;
 	}
