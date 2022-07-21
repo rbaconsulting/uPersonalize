@@ -1,11 +1,8 @@
 # uPersonalize
 
-[![Release Badge](https://img.shields.io/badge/uPersonalize-v0.1.2-blueviolet)](https://github.com/rbaconsulting/uPersonalize/releases/latest)
-[![Nuget Package](https://img.shields.io/badge/uPersonalize-0.1.2-blue)](https://www.nuget.org/packages/uPersonalize/)
-[![License](https://img.shields.io/badge/License-MPL2.0-green)](https://github.com/rbaconsulting/uPersonalize/blob/main/LICENSE)
-
 [![Package uPersonalize](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml)
 [![Build Status](https://github.com/rbaconsulting/uPersonalize/actions/workflows/ci-build.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/pull-request.yml)
+[![Nuget Package](https://img.shields.io/badge/uPersonalize-nuget.org-blue)](https://www.nuget.org/packages/uPersonalize/)
 
 ## Overview
 
