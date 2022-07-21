@@ -11,15 +11,15 @@ using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Packaging;
 
-namespace uPersonalize.Migrations
+namespace uPersonalize.Migrations.Plans
 {
-	public class uPersonalizeMigration : PackageMigrationBase
+	public class uPersonalizePackage : PackageMigrationBase
 	{
-		private readonly ILogger<uPersonalizeMigration> _logger;
+		private readonly ILogger<uPersonalizePackage> _logger;
 		private readonly IPackagingService _packagingService;
 
-		public uPersonalizeMigration(
-			ILogger<uPersonalizeMigration> logger,
+		public uPersonalizePackage(
+			ILogger<uPersonalizePackage> logger,
 			IPackagingService packagingService,
 			IMediaService mediaService,
 			MediaFileManager mediaFileManager,
@@ -37,17 +37,17 @@ namespace uPersonalize.Migrations
 		protected override void Migrate()
 		{
 			try
-            {
+			{
 				var reader = XmlReader.Create("./App_Plugins/uPersonalize/package.xml");
 				var packageDocument = XDocument.Load(reader);
 
 				ImportPackage.FromXmlDataManifest(packageDocument).Do();
 				_packagingService.InstallCompiledPackageData(packageDocument);
 			}
-			catch(Exception e)
-            {
-                _logger.LogError(e.Message);
-            }
-        }
+			catch (Exception e)
+			{
+				_logger.LogError(e.Message);
+			}
+		}
 	}
 }

@@ -12,31 +12,36 @@ namespace uPersonalize.Interfaces
 		/// <summary>
 		/// Determines what the domain should be for uPersonalize http cookies.
 		/// </summary>
-		string Domain { get; set; }
+		string DomainCookieOption { get; set; }
 
 		/// <summary>
 		/// Determines if uPersonalize http cookies should be marked as "secure".
 		/// </summary>
-		bool Secure { get; set; }
+		bool SecureCookieOption { get; set; }
 
 		/// <summary>
 		/// Determines what <see cref="SameSiteMode">SameSiteMode</see> setting uPersonalize http cookies should use.
 		/// </summary>
-		SameSiteMode SameSite { get; set; }
+		SameSiteMode SameSiteCookieOption { get; set; }
 
 		/// <summary>
 		/// Determines when uPersonalize http cookies should expire.
 		/// </summary>
-		TimeSpan MaxAge { get; set; }
+		TimeSpan MaxAgeCookieOption { get; set; }
 
 		/// <summary>
 		/// Retrieves http cookie options from the cookie security related options.
 		/// </summary>
-		/// <returns> <see cref="Microsoft.AspNetCore.Http.CookieOptions">Microsoft.AspNetCore.Http.CookieOptions</see></returns>
+		/// <returns> <see cref="CookieOptions">Microsoft.AspNetCore.Http.CookieOptions</see></returns>
 		CookieOptions GetCookieOptions();
 
 		/// <summary>
-		/// Saves the model state to uPersonalize-settings.json
+		/// Loads the model state from the settings database table
+		/// </summary>
+		void Load();
+
+		/// <summary>
+		/// Saves the model state to the settings database table
 		/// </summary>
 		Task Save();
 	}
