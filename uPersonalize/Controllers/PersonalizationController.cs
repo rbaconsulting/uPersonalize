@@ -21,6 +21,27 @@ namespace uPersonalize.Controllers
 			_personalizationService = personalizationService;
 		}
 
+		[HttpGet]
+		[Route("umbraco/uPersonalize/Personalization/IsOptOut")]
+		public async Task<bool> IsOptOut()
+		{
+			return await _personalizationService.IsOptOut();
+		}
+
+		[HttpPost]
+		[Route("umbraco/uPersonalize/Personalization/OptOut")]
+		public async Task OptOut()
+		{
+			await _personalizationService.OptOut();
+		}
+
+		[HttpPost]
+		[Route("umbraco/uPersonalize/Personalization/ResetPersonalization")]
+		public async Task ResetPersonalization()
+		{
+			await _personalizationService.ResetPersonalization();
+		}
+
 		[HttpPost]
 		[Route("umbraco/uPersonalize/Personalization/OnPageLoad/{pageId}")]
 		public async Task OnPageLoad(int pageId)

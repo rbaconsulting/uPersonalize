@@ -1,14 +1,33 @@
 ﻿using uPersonalize.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using uPersonalize.Services;
 
 namespace uPersonalize.Interfaces
 {
 	/// <summary>
-	/// Service already implemented by <see cref="uPersonalize.Services.PersonalizationService">PersonalizationService</see>, providing personalization logic to Umbraco.
+	/// Service already implemented by <see cref="PersonalizationService">PersonalizationService</see>, providing personalization logic to Umbraco.
 	/// </summary>
 	public interface IPersonalizationService
 	{
+		/// <summary>
+		/// Returns if the current user has opted out or not.
+		/// </summary>
+		/// <returns>true on if a user has opted out, false if not.</returns>
+		Task<bool> IsOptOut();
+
+		/// <summary>
+		/// Opts out the current user from being tracked by uPersonalize.
+		/// </summary>
+		/// <returns>true on success, false on failure.</returns>
+		Task<bool> OptOut();
+
+		/// <summary>
+		/// Resets all personalization data for the current user.
+		/// </summary>
+		/// <returns>true on success, false on failure.</returns>
+		Task<bool> ResetPersonalization();
+
 		/// <summary>
 		/// Records a user's page loads, device type, and ip address to be used later by the personalization filter.
 		/// </summary>
