@@ -31,5 +31,24 @@ namespace uPersonalize.Interfaces
 		/// <param name="value"></param>
 		/// <returns>true on success, false on failure.</returns>
 		Task<bool> SetKeyValueListCookie(PersonalizationConditions type, string key, int value = 1);
+
+		/// <summary>
+		/// Returns if the current user has opted out or not.
+		/// </summary>
+		/// <returns>true on if a user has opted out, false if not.</returns>
+		Task<bool> IsOptOut();
+
+		/// <summary>
+		/// Sets the cookie related to opting out a user.
+		/// </summary>
+		/// <returns>true on success, false on failure.</returns>
+		Task<bool> SetOptOut();
+
+		/// <summary>
+		/// Deletes all uPersonalize related cookies, excludes opt out cookie by default.
+		/// </summary>
+		/// <param name="includeOptOut"></param>
+		/// <returns>true on success, false on failure.</returns>
+		Task<bool> DeleteCookies(bool includeOptOut = false);
 	}
 }

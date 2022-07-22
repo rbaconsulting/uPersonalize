@@ -10,6 +10,20 @@
 		return response;
 	}
 
+	static async isOptOut() {
+		let result = await uPersonalize.makeRequest('/umbraco/uPersonalize/Personalization/isOptOut', 'GET', null);
+
+		return result;
+	}
+
+	static async optOut() {
+		await uPersonalize.makeRequest('/umbraco/uPersonalize/Personalization/optOut', 'POST', null);
+	}
+
+	static async resetPersonalization(includeOptOut) {
+		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/resetPersonalization/${includeOptOut}`, 'POST', null);
+	}
+
 	static async onPageLoad(pageId) {
 		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/onPageLoad/${pageId}`, 'POST', null);
 	}
