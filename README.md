@@ -1,10 +1,8 @@
-# uPersonalize
+# uPersonalize Overview
 
 [![Package uPersonalize](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/package-uPersonalize.yml)
 [![Build Status](https://github.com/rbaconsulting/uPersonalize/actions/workflows/ci-build.yml/badge.svg)](https://github.com/rbaconsulting/uPersonalize/actions/workflows/pull-request.yml)
 [![Nuget Package](https://img.shields.io/badge/uPersonalize-nuget.org-blue)](https://www.nuget.org/packages/uPersonalize/)
-
-## Overview
 
 uPersonalize is an Umbraco app plugin for personalizing your website in a content friendly way. With uPersonalize, backoffice users are able to configure specific components to render differently on a page depending on conditions sepcific to individual users on your website. For example, below is a demo of using the grid layout to hide text if a user has been to the home page 10 times. Installing uPersonalize includes a grid layout datatype, a property editor, and a settings dashboard to configure security settings. However, uPersonalize also provides C# and Javsacript service classes that can be utilized for custom implementations.
 
