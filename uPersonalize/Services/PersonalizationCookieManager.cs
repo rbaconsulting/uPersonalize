@@ -68,7 +68,7 @@ namespace uPersonalize.Services
 			});
 		}
 
-		public async Task<bool> DeleteCookies()
+		public async Task<bool> DeleteCookies(bool includeOptOut = false)
 		{
 			return await Task.Run(() =>
 			{
@@ -81,7 +81,10 @@ namespace uPersonalize.Services
 						HttpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName);
 					}
 
-					HttpContextAccessor.HttpContext.Response.Cookies.Delete(_optOutCookieName);
+					if(includeOptOut)
+					{
+						HttpContextAccessor.HttpContext.Response.Cookies.Delete(_optOutCookieName);
+					}
 
 					return true;
 				}

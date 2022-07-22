@@ -36,10 +36,10 @@ namespace uPersonalize.Controllers
 		}
 
 		[HttpPost]
-		[Route("umbraco/uPersonalize/Personalization/ResetPersonalization")]
-		public async Task ResetPersonalization()
+		[Route("umbraco/uPersonalize/Personalization/ResetPersonalization/{includeOptOut}")]
+		public async Task ResetPersonalization(bool includeOptOut)
 		{
-			await _personalizationService.ResetPersonalization();
+			await _personalizationService.ResetPersonalization(includeOptOut);
 		}
 
 		[HttpPost]

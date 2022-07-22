@@ -20,8 +20,8 @@
 		await uPersonalize.makeRequest('/umbraco/uPersonalize/Personalization/optOut', 'POST', null);
 	}
 
-	static async resetPersonalization() {
-		await uPersonalize.makeRequest('/umbraco/uPersonalize/Personalization/resetPersonalization', 'POST', null);
+	static async resetPersonalization(includeOptOut) {
+		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/resetPersonalization/${includeOptOut}`, 'POST', null);
 	}
 
 	static async onPageLoad(pageId) {

@@ -45,9 +45,10 @@ namespace uPersonalize.Interfaces
 		Task<bool> SetOptOut();
 
 		/// <summary>
-		/// Deletes all uPersonalize related cookies.
+		/// Deletes all uPersonalize related cookies, excludes opt out cookie by default.
 		/// </summary>
+		/// <param name="includeOptOut"></param>
 		/// <returns>true on success, false on failure.</returns>
-		Task<bool> DeleteCookies();
+		Task<bool> DeleteCookies(bool includeOptOut = false);
 	}
 }

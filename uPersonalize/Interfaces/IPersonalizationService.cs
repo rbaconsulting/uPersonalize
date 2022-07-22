@@ -23,10 +23,11 @@ namespace uPersonalize.Interfaces
 		Task<bool> OptOut();
 
 		/// <summary>
-		/// Resets all personalization data for the current user.
+		/// Resets all personalization data for the current user, excludes opt out cookie by default.
 		/// </summary>
+		/// <param name="includeOptOut"></param>
 		/// <returns>true on success, false on failure.</returns>
-		Task<bool> ResetPersonalization();
+		Task<bool> ResetPersonalization(bool includeOptOut = false);
 
 		/// <summary>
 		/// Records a user's page loads, device type, and ip address to be used later by the personalization filter.

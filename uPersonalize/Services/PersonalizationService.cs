@@ -39,14 +39,15 @@ namespace uPersonalize.Services
 
 		public async Task<bool> OptOut()
 		{
+			await _cookieManager.DeleteCookies();
 			await _cookieManager.SetOptOut();
 
 			return false;
 		}
 
-		public async Task<bool> ResetPersonalization()
+		public async Task<bool> ResetPersonalization(bool includeOptOut = false)
 		{
-			await _cookieManager.DeleteCookies();
+			await _cookieManager.DeleteCookies(includeOptOut);
 
 			return false;
 		}
