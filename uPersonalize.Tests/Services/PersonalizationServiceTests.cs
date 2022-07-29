@@ -59,6 +59,7 @@ namespace uPersonalize.Tests.Services
 
 				var filter = new PersonalizationFilter()
 				{
+					Action = PersonalizationActions.Show,
 					IpAddress = IPAddress.None.ToString(),
 					Condition = personalizationCondition,
 					DeviceToMatch = DeviceTypes.Windows,
@@ -85,6 +86,7 @@ namespace uPersonalize.Tests.Services
 
 			var filter = new PersonalizationFilter()
 			{
+				Action = PersonalizationActions.Show,
 				Condition = personalizationCondition,
 				PageId = "10",
 				EventName = "testEvent",
@@ -101,6 +103,7 @@ namespace uPersonalize.Tests.Services
 			{
 				var filter = new PersonalizationFilter()
 				{
+					Action = PersonalizationActions.Show,
 					IpAddress = "127.1.1.1",
 					DeviceToMatch = DeviceTypes.Android,
 					Condition = personalizationCondition,
@@ -127,6 +130,7 @@ namespace uPersonalize.Tests.Services
 
 			var filter = new PersonalizationFilter()
 			{
+				Action = PersonalizationActions.Show,
 				Condition = personalizationCondition,
 				EventName = "notFound",
 				PageId = "15",

@@ -46,8 +46,9 @@ namespace uPersonalize.Tests
 			var cookieManager = new Mock<IPersonalizationCookieManager>();
 			cookieManager.SetReturnsDefault(Task.FromResult(true));
 			cookieManager.SetReturnsDefault(Task.FromResult(string.Empty));
+			cookieManager.Setup(c => c.IsOptOut()).Returns(Task.FromResult(false));
 
-			if(asList)
+			if (asList)
 			{
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page)).Returns(Task.FromResult("10:1,11:1"));
 				cookieManager.Setup(c => c.GetCookie(PersonalizationConditions.Visited_Page_Count)).Returns(Task.FromResult("10:1,11:1"));
