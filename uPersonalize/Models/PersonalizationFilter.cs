@@ -34,7 +34,7 @@ namespace uPersonalize.Models
             {
 				switch (Condition)
 				{
-					case PersonalizationConditions.IP_Address: return DeviceToMatch != DeviceTypes.Default;
+					case PersonalizationConditions.IP_Address: return !string.IsNullOrWhiteSpace(IpAddress);
 					case PersonalizationConditions.Device_Type: return DeviceToMatch != DeviceTypes.Default;
 					case PersonalizationConditions.Visited_Page: return !string.IsNullOrWhiteSpace(PageId);
 					case PersonalizationConditions.Visited_Page_Count: return !string.IsNullOrWhiteSpace(PageId) && PageEventCount > 0;
