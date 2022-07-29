@@ -8,8 +8,8 @@
 			<url>https://github.com/rbaconsulting/uPersonalize</url>
 			<requirements type="strict">
 				<major>9</major>
-				<minor>4</minor>
-				<patch>3</patch>
+				<minor>2</minor>
+				<patch>0</patch>
 			</requirements>
 		</package>
 		<author>
