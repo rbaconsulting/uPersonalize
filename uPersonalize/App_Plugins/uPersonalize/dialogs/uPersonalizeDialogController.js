@@ -41,6 +41,18 @@
         {
             "label": "Is Logged In",
             "value": "Logged_In"
+        },
+        {
+            "label": "Is Logged In",
+            "value": "Logged_In"
+        },
+        {
+            "label": "Is Now Before Date & Time",
+            "value": "DateTime_Before"
+        },
+        {
+            "label": "Is Now After Date & Time",
+            "value": "DateTime_After"
         }
     ];
 

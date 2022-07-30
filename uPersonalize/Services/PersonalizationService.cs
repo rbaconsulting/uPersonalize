@@ -166,6 +166,10 @@ namespace uPersonalize.Services
 						break;
 					case PersonalizationConditions.Logged_In:
 						return _memberManager.IsLoggedIn();
+					case PersonalizationConditions.DateTime_Before:
+						return DateTime.Now.CompareTo(filter.DateTimeCompare) < 0;
+					case PersonalizationConditions.DateTime_After:
+						return DateTime.Now.CompareTo(filter.DateTimeCompare) > 0;
 					default:
 						break;
 				}

@@ -21,7 +21,7 @@
 	getSettings();
 
 	function getSettings() {
-		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationSettings/GetPersonalizationSettings', 'GET', null, getSettingsCallback);
+		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationBackoffice/GetPersonalizationSettings', 'GET', null, getSettingsCallback);
 	}
 
 	$scope.saveSettings = function () {
@@ -34,7 +34,7 @@
 			MaxAgeCookieOption: `${$scope.model.maxAgeDays}.${$scope.model.maxAgeHours}:${$scope.model.maxAgeMinutes}:00`
 		};
 
-		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationSettings/SavePersonalizationSettings', 'POST', data, saveSettingsCallback);
+		makeRequest('/umbraco/backoffice/uPersonalize/PersonalizationBackoffice/SavePersonalizationSettings', 'POST', data, saveSettingsCallback);
 	}
 
 	function getSettingsCallback(responseData) {

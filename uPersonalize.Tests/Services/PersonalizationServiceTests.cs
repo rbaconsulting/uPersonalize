@@ -65,7 +65,8 @@ namespace uPersonalize.Tests.Services
 					DeviceToMatch = DeviceTypes.Windows,
 					PageId = "10",
 					EventName = "testEvent",
-					PageEventCount = 1
+					PageEventCount = 1,
+					DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
 				};
 
 				Assert.IsTrue(await _personalizationService.DoesFilterMatch(filter));
@@ -90,7 +91,8 @@ namespace uPersonalize.Tests.Services
 				Condition = personalizationCondition,
 				PageId = "10",
 				EventName = "testEvent",
-				PageEventCount = 1
+				PageEventCount = 1,
+				DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
 			};
 
 			Assert.IsTrue(await _personalizationService.DoesFilterMatch(filter));
@@ -109,7 +111,8 @@ namespace uPersonalize.Tests.Services
 					Condition = personalizationCondition,
 					EventName = "notFound",
 					PageId = "15",
-					PageEventCount = 2
+					PageEventCount = 2,
+					DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(2) : DateTime.Now.AddDays(-2)
 				};
 
 				Assert.IsFalse(await _personalizationService.DoesFilterMatch(filter));
@@ -134,7 +137,8 @@ namespace uPersonalize.Tests.Services
 				Condition = personalizationCondition,
 				EventName = "notFound",
 				PageId = "15",
-				PageEventCount = 2
+				PageEventCount = 2,
+				DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
 			};
 
 			Assert.IsFalse(await _personalizationService.DoesFilterMatch(filter));
@@ -180,7 +184,8 @@ namespace uPersonalize.Tests.Services
 					DeviceToMatch = DeviceTypes.Windows,
 					PageId = "10",
 					EventName = "testEvent",
-					PageEventCount = 1
+					PageEventCount = 1,
+					DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
 				};
 
 				Assert.IsFalse(await _personalizationService.DoesFilterMatch(filter));
