@@ -60,6 +60,8 @@
 									</span>
 								</ng-form>
 							</div>
+
+							<input ng-if="vm.uPersonalizeConfig.condition === 'DateTime_Before' || vm.uPersonalizeConfig.condition === 'DateTime_After'" type="datetime-local" ng-model="vm.uPersonalizeConfig.dateTimeCompare" value="{{vm.uPersonalizeConfig.dateTimeCompare}}" />
 						</div>
 					</umb-box-content>
 				</umb-box>

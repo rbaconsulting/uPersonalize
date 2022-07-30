@@ -12,15 +12,15 @@ using uPersonalize.Constants;
 namespace uPersonalize.Controllers
 {
 	/// <summary>
-	/// /umbraco/backoffice/uPersonalize/PersonalizationSettings/{action}
+	/// /umbraco/backoffice/uPersonalize/PersonalizationBackoffice/{action}
 	/// </summary>
 	[PluginController(AppPlugin.Name)]
-	public class PersonalizationSettingsController : UmbracoAuthorizedApiController
+	public class PersonalizationBackofficeController : UmbracoAuthorizedApiController
 	{
-		private ILogger<PersonalizationSettingsController> Logger { get; }
+		private ILogger<PersonalizationBackofficeController> Logger { get; }
 		private IPersonalizationSettings _uPersonalizeSettings { get; set; }
 
-		public PersonalizationSettingsController(ILogger<PersonalizationSettingsController> logger, IPersonalizationSettings uPersonalizeSettings)
+		public PersonalizationBackofficeController(ILogger<PersonalizationBackofficeController> logger, IPersonalizationSettings uPersonalizeSettings)
 		{
 			Logger = logger;
 			_uPersonalizeSettings = uPersonalizeSettings;

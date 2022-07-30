@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using uPersonalize.Enums;
 
 namespace uPersonalize.Models
@@ -12,6 +13,7 @@ namespace uPersonalize.Models
 		public string PageId { get; set; }
 		public string EventName { get; set; }
 		public int PageEventCount { get; set; }
+		public DateTime DateTimeCompare { get; set; }
 		public string AdditionalClasses { get; set; }
 
 		public PersonalizationFilter()
@@ -23,6 +25,7 @@ namespace uPersonalize.Models
 			PageId = string.Empty;
 			EventName = string.Empty;
 			PageEventCount = 0;
+			DateTimeCompare = default(DateTime);
 			AdditionalClasses = string.Empty;
 		}
 
@@ -40,6 +43,8 @@ namespace uPersonalize.Models
 					case PersonalizationConditions.Visited_Page_Count: return !string.IsNullOrWhiteSpace(PageId) && PageEventCount > 0;
 					case PersonalizationConditions.Event_Triggered: return !string.IsNullOrWhiteSpace(EventName);
 					case PersonalizationConditions.Event_Triggered_Count: return !string.IsNullOrWhiteSpace(EventName) && PageEventCount > 0;
+					case PersonalizationConditions.DateTime_Before: return DateTimeCompare != default(DateTime);
+					case PersonalizationConditions.DateTime_After: return DateTimeCompare != default(DateTime);
 					case PersonalizationConditions.Logged_In: return true;
 					default: break;
 				}

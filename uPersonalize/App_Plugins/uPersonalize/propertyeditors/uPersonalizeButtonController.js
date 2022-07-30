@@ -4,13 +4,17 @@
 		action: '',
 		ipAddress: '',
 		deviceToMatch: 0,
-		pageId: [],
+		pageId: '',
 		eventName: '',
 		pageEventCount: 0,
+		dateTimeCompare: '',
 		additionalClasses: ''
 	};
 
 	if (config) {
+
+		config.dateTimeCompare = config.dateTimeCompare.replace('Z', '');
+
 		$scope.editGridItemSettings = function () {
 			var dialogOptions = {
 				title: "uPersonalize",
