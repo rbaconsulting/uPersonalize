@@ -1,6 +1,7 @@
 ﻿angular.module("umbraco").controller("uPersonalizeDialogController", function ($scope, entityResource, iconHelper, editorService) {
     $scope.renderModel = [];
     $scope.ids = [];
+    $scope.ipAddress = ['', '', '', ''];
 
     var config = {
         multiPicker: true,
@@ -37,10 +38,6 @@
         {
             "label": "Event Triggered X Times",
             "value": "Event_Triggered_Count"
-        },
-        {
-            "label": "Is Logged In",
-            "value": "Logged_In"
         },
         {
             "label": "Is Logged In",
@@ -95,6 +92,8 @@
     ];
 
     vm.submit = function () {
+        vm.uPersonalizeConfig.ipAddress = `${$scope.ipAddress[0]}.${$scope.ipAddress[1]}.${$scope.ipAddress[2]}.${$scope.ipAddress[3]}`;
+
         if ($scope.model && $scope.model.submit) {
             $scope.model.submit(vm.uPersonalizeConfig);
         }
@@ -165,6 +164,14 @@
     function trim(str, chr) {
         var rgxtrim = (!chr) ? new RegExp('^\\s+|\\s+$', 'g') : new RegExp('^' + chr + '+|' + chr + '+$', 'g');
         return str.replace(rgxtrim, '');
+    }
+
+    if (vm.uPersonalizeConfig.ipAddress) {
+        var tempIpAddress = vm.uPersonalizeConfig.ipAddress.split('.');
+
+        if (tempIpAddress.length == 4) {
+            $scope.ipAddress = tempIpAddress;
+        }
     }
 
     if (vm.uPersonalizeConfig.pageId && vm.uPersonalizeConfig.pageId.length > 0) {

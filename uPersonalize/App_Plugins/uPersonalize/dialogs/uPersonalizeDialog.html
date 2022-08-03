@@ -16,7 +16,13 @@
 
 							<label ng-if="vm.uPersonalizeConfig.condition === 'IP_Address'" class="control-label ng-binding">IP Address</label>
 							<div ng-if="vm.uPersonalizeConfig.condition === 'IP_Address'" class="umb-property-editor db">
-								<input type="text" ng-model="vm.uPersonalizeConfig.ipAddress" ng-trim="false" class="umb-property-editor umb-textstring" />
+								<input type="text" ng-model="ipAddress[0]" ng-trim="false" class="w-20" placeholder="192" />
+								.
+								<input type="text" ng-model="ipAddress[1]" ng-trim="false" class="w-20" placeholder="168" />
+								.
+								<input type="text" ng-model="ipAddress[2]" ng-trim="false" class="w-20" placeholder="1" />
+								.
+								<input type="text" ng-model="ipAddress[3]" ng-trim="false" class="w-20" placeholder="xxx" />
 							</div>
 
 							<label ng-if="vm.uPersonalizeConfig.condition === 'Device_Type'" class="control-label ng-binding">Device Type</label>

@@ -4,36 +4,39 @@
 	</div>
 	<div class="umb-panel-group__details-group">
 		<div class="umb-panel-group__details-group-title">
-			<div class="umb-panel-group__details-group-name">Personalization Cookie Settings</div>
+			<div class="umb-panel-group__details-group-name">Personalization Cookie Options</div>
 		</div>
 		<div class="umb-panel-group__details-checks">
 			<div class="umb-panel-group__details-check">
 				<div class="umb-panel-group__details-check-title">
 					<div class="umb-panel-group__details-check-name">
-						<label for="domain" class="bold">Domain:</label>
-						<input name="domain" type="text" ng-model="model.domain" />
+						Domain:
 					</div>
 
-					<br />
+					<input name="domain" type="text" ng-model="model.domain" />
+
+					<br /><br />
 
 					<div class="umb-panel-group__details-check-name">
-						<label for="secure" class="bold">Same Site:</label>
-						<input name="secure" type="checkbox" ng-model="model.secure" />
+						Secure:
 					</div>
 
-					<br />
+					<input name="secure" type="checkbox" ng-model="model.secure" />
+
+					<br /><br />
 
 					<div class="umb-panel-group__details-check-name">
-						<label for="sameSite" class="bold">Same Site:</label>
-						<select name="sameSite" ng-model="model.sameSite">
-							<option ng-repeat="option in sameSiteOptions" value="{{option}}" ng-selected="{{option == model.sameSite}}">{{option}}</option>
-						</select>
+						Same Site:
 					</div>
 
-					<br />
+					<select name="sameSite" ng-model="model.sameSite">
+						<option ng-repeat="option in sameSiteOptions" value="{{option}}" ng-selected="{{option == model.sameSite}}">{{option}}</option>
+					</select>
+
+					<br /><br />
 
 					<div class="umb-panel-group__details-check-name">
-						MaxAge:
+						Maximum Age (in days):
 					</div>
 
 					<div class="umb-panel-group__details-check-description">
@@ -51,7 +54,7 @@
 				<div class="umb-panel-group__details-status top-border">
 					<div class="umb-panel-group__details-status-content">
 						<div class="no-background no-left-padding">
-							<button ng-click="saveSettings()" type="button" class="btn btn-success">Save Cookie Settings</button>
+							<button ng-click="saveSettings()" type="button" class="btn btn-success">Save</button>
 						</div>
 					</div>
 				</div>
