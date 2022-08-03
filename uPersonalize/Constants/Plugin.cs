@@ -1,6 +1,6 @@
 ﻿namespace uPersonalize.Constants
 {
-	public struct AppPlugin
+	public struct Plugin
 	{
 		public const string Name = "uPersonalize";
 	}

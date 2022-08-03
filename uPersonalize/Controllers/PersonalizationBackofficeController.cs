@@ -14,7 +14,7 @@ namespace uPersonalize.Controllers
 	/// <summary>
 	/// /umbraco/backoffice/uPersonalize/PersonalizationBackoffice/{action}
 	/// </summary>
-	[PluginController(AppPlugin.Name)]
+	[PluginController(Plugin.Name)]
 	public class PersonalizationBackofficeController : UmbracoAuthorizedApiController
 	{
 		private ILogger<PersonalizationBackofficeController> Logger { get; }

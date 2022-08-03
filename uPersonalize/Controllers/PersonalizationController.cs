@@ -11,7 +11,7 @@ namespace uPersonalize.Controllers
 	/// <summary>
 	/// ~/Umbraco/uPersonalize/Personalization
 	/// </summary>
-	[PluginController(AppPlugin.Name)]
+	[PluginController(Plugin.Name)]
 	public class PersonalizationController : UmbracoApiController
 	{
 		private readonly IPersonalizationService _personalizationService;

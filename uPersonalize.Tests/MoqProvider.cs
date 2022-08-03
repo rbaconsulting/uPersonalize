@@ -17,6 +17,13 @@ namespace uPersonalize.Tests
 			return logger.Object;
 		}
 
+		public static IPersonalizationService PersonalizationService()
+		{
+			var personalizationSettings = new Mock<IPersonalizationService>();
+
+			return personalizationSettings.Object;
+		}
+
 		public static IPersonalizationSettings PersonalizationSettings()
 		{
 			var personalizationSettings = new Mock<IPersonalizationSettings>();

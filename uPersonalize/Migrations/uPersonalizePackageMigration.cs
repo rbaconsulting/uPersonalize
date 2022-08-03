@@ -6,7 +6,7 @@ namespace uPersonalize.Migrations
 {
 	public class uPersonalizePackageMigration : PackageMigrationPlan
 	{
-		public uPersonalizePackageMigration() : base(AppPlugin.Name)
+		public uPersonalizePackageMigration() : base(Plugin.Name)
 		{
 		}
 
