@@ -6,6 +6,7 @@ using System.Web;
 using uPersonalize.Enums;
 using uPersonalize.Enums.Extensions;
 using System.Linq;
+using uPersonalize.Services;
 
 namespace uPersonalize.Tests
 {
@@ -35,6 +36,16 @@ namespace uPersonalize.Tests
 			var cookiesFeature = new RequestCookiesFeature(featureCollection);
 
 			HttpContext.Request.Cookies = cookiesFeature.Cookies;
+		}
+
+		protected PersonalizationService InitializePersonalizationService(bool initMemberManager, bool withCookieValues, bool cookiesAsList)
+		{
+			var cookieManager = MoqProvider.PersonalizationCookieManager(withCookieValues, cookiesAsList);
+
+			return new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
+											  MoqProvider.MemberManager(initMemberManager),
+											  MoqProvider.HttpContextAccessor(HttpContext),
+											  cookieManager);
 		}
 
 		protected string GetUnitTestCookie(PersonalizationConditions personalizationCondition)

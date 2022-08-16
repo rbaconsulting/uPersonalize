@@ -1,9 +1,10 @@
 ﻿using NPoco;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
+using uPersonalize.Constants;
 
 namespace uPersonalize.Migrations.Schemas
 {
-	[TableName(Constants.Migrations.Names.SettingsTableName)]
+	[TableName(Plugin.Migrations.Reporting.TableName)]
     [PrimaryKey("Key", AutoIncrement = false)]
     [ExplicitColumns]
     public class uPersonalizeSetting

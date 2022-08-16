@@ -21,9 +21,4 @@
     <ProjectReference Include="..\uPersonalize\uPersonalize.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

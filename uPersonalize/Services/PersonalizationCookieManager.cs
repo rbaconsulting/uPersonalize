@@ -6,12 +6,12 @@ using uPersonalize.Interfaces;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using uPersonalize.Constants;
 
 namespace uPersonalize.Services
 {
 	public class PersonalizationCookieManager : IPersonalizationCookieManager
 	{
-		private readonly string _optOutCookieName = "uPersonalize_opt_out";
 		private readonly CookieOptions _cookieOptions;
 		private readonly ILogger<PersonalizationCookieManager> _logger;
 
@@ -31,9 +31,9 @@ namespace uPersonalize.Services
 			{
 				try
 				{
-					if(HttpContextAccessor.HttpContext.Request.Cookies.ContainsKey(_optOutCookieName))
+					if(HttpContextAccessor.HttpContext.Request.Cookies.ContainsKey(Cookies.OptOut.Name))
 					{
-						HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(_optOutCookieName, out string cookieStringValue);
+						HttpContextAccessor.HttpContext.Request.Cookies.TryGetValue(Cookies.OptOut.Name, out string cookieStringValue);
 
 						var parseResult = bool.TryParse(cookieStringValue, out bool cookieValue);
 
@@ -55,7 +55,7 @@ namespace uPersonalize.Services
 			{
 				try
 				{
-					HttpContextAccessor.HttpContext.Response.Cookies.Append(_optOutCookieName, "True", _cookieOptions);
+					HttpContextAccessor.HttpContext.Response.Cookies.Append(Cookies.OptOut.Name, "True", _cookieOptions);
 
 					return true;
 				}
@@ -83,7 +83,7 @@ namespace uPersonalize.Services
 
 					if(includeOptOut)
 					{
-						HttpContextAccessor.HttpContext.Response.Cookies.Delete(_optOutCookieName);
+						HttpContextAccessor.HttpContext.Response.Cookies.Delete(Cookies.OptOut.Name);
 					}
 
 					return true;

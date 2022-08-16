@@ -1,4 +1,5 @@
-﻿using uPersonalize.Enums.Attributes;
+﻿using uPersonalize.Constants;
+using uPersonalize.Enums.Attributes;
 
 namespace uPersonalize.Enums
 {
@@ -6,15 +7,15 @@ namespace uPersonalize.Enums
 	{
 		Default = 0,
 		IP_Address = 1,
-		[CookieName("uPersonalize_device")]
+		[CookieName(Cookies.Device.Name)]
 		Device_Type = 2,
-		[CookieName("uPersonalize_visited_pages")]
+		[CookieName(Cookies.VisitedPages.Name)]
 		Visited_Page = 3,
-		[CookieName("uPersonalize_visited_pages")]
+		[CookieName(Cookies.VisitedPages.Name)]
 		Visited_Page_Count = 4,
-		[CookieName("uPersonalize_click_event")]
+		[CookieName(Cookies.ClickedEvents.Name)]
 		Event_Triggered = 5,
-		[CookieName("uPersonalize_click_event")]
+		[CookieName(Cookies.ClickedEvents.Name)]
 		Event_Triggered_Count = 6,
 		Logged_In = 7,
 		DateTime_Before = 8,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Infrastructure.Migrations;
+using uPersonalize.Constants;
 using uPersonalize.Migrations.Schemas;
 
 namespace uPersonalize.Migrations.Plans
@@ -14,14 +15,14 @@ namespace uPersonalize.Migrations.Plans
 		{
 			Logger.LogDebug("Running migration {MigrationStep}", "AddSettingsTable");
 
-			// Lots of methods available in the MigrationBase class - discover with this.
-			if (!TableExists(Constants.Migrations.Names.SettingsTableName))
+			if (!TableExists(Plugin.Migrations.Settings.TableName))
 			{
 				Create.Table<uPersonalizeSetting>().Do();
+				Logger.LogInformation("{DbTable} database table has been created!", Plugin.Migrations.Settings.TableName);
 			}
 			else
 			{
-				Logger.LogDebug("The database table {DbTable} already exists, skipping", Constants.Migrations.Names.SettingsTableName);
+				Logger.LogDebug("The database table {DbTable} already exists, skipping", Plugin.Migrations.Settings.TableName);
 			}
 		}
 	}
