@@ -8,23 +8,19 @@ using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
 using uPersonalize.Migrations.Plans;
 using System.Reflection;
-using System;
+using uPersonalize.Constants;
 using Microsoft.Extensions.Logging;
-using System.Numerics;
+using System;
 
 namespace uPersonalize.Migrations
 {
 	public class uPersonalizeDatabaseMigration : INotificationHandler<UmbracoApplicationStartingNotification>
 	{
-		private readonly string _uPersonalizeSettingsKey = "uPersonalize_Settings";
-		private readonly string _uPersonalizeReportingKey = "uPersonalize_Reporting";
-
 		private readonly ILogger<uPersonalizeDatabaseMigration> _logger;
 		private readonly IScopeProvider _scopeProvider;
 		private readonly IMigrationPlanExecutor _migrationPlanExecutor;
 		private readonly IKeyValueService _keyValueService;
 		private readonly IRuntimeState _runtimeState;
-
 
 		public uPersonalizeDatabaseMigration(ILogger<uPersonalizeDatabaseMigration> logger,
 			IScopeProvider scopeProvider,
@@ -32,7 +28,7 @@ namespace uPersonalize.Migrations
 			IKeyValueService keyValueService,
 			IRuntimeState runtimeState)
 		{
-			_logger	= logger;
+			_logger = logger;
 			_scopeProvider = scopeProvider;
 			_migrationPlanExecutor = migrationPlanExecutor;
 			_keyValueService = keyValueService;
@@ -46,31 +42,19 @@ namespace uPersonalize.Migrations
 				return;
 			}
 
-			var currentVersion = string.Empty;
-
 			try
 			{
-				currentVersion = _keyValueService.GetValue($"Umbraco.Core.Upgrader.State+{_uPersonalizeSettingsKey}");		
-			}
-			catch(Exception e)
-			{
-				_logger.LogWarning(e.Message);
-			}
-			finally
-			{
+				var currentVersion = _keyValueService.GetValue($"Umbraco.Core.Upgrader.State+{Plugin.Migrations.Settings.MigrationKey}") ?? string.Empty;
 				var newVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-				var settingsPlan = new MigrationPlan(_uPersonalizeSettingsKey);
-				var reportingPlan = new MigrationPlan(_uPersonalizeReportingKey);
+				var settingsPlan = new MigrationPlan(Plugin.Migrations.Settings.MigrationKey);
+				var reportingPlan = new MigrationPlan(Plugin.Migrations.Reporting.MigrationKey);
 
-				if (!string.IsNullOrWhiteSpace(currentVersion) && !newVersion.Equals(currentVersion))
+				if (!newVersion.Equals(currentVersion))
 				{
 					settingsPlan.From(currentVersion).To<uPersonalizeSettingsTable>(newVersion);
 					reportingPlan.From(currentVersion).To<uPersonalizeReportingTable>(newVersion);
 				}
-
-				settingsPlan.From(string.Empty).To<uPersonalizeSettingsTable>(newVersion);
-				reportingPlan.From(string.Empty).To<uPersonalizeReportingTable>(newVersion);
 
 				var upgrader = new Upgrader(settingsPlan);
 				upgrader.Execute(_migrationPlanExecutor, _scopeProvider, _keyValueService);
@@ -78,7 +62,10 @@ namespace uPersonalize.Migrations
 				upgrader = new Upgrader(reportingPlan);
 				upgrader.Execute(_migrationPlanExecutor, _scopeProvider, _keyValueService);
 			}
-
+			catch (Exception e)
+			{
+				_logger.LogError(e.Message);
+			}
 		}
 	}
 }

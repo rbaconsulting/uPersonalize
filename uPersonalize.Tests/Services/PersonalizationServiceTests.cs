@@ -19,10 +19,8 @@ namespace uPersonalize.Tests.Services
 		{
 			SetupBase();
 
-			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(false),
-																 MoqProvider.HttpContextAccessor(HttpContext),
-																 MoqProvider.PersonalizationCookieManager(true, false));
+			_personalizationService = InitializePersonalizationService(false, true, false);
+
 			Random = new Random();
 		}
 
@@ -43,10 +41,7 @@ namespace uPersonalize.Tests.Services
 		[TestMethod]
 		public async Task DoesFilterMatch_Valid_Filter_Match()
 		{
-			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(true),
-																 MoqProvider.HttpContextAccessor(HttpContext),
-																 MoqProvider.PersonalizationCookieManager(true, false));
+			_personalizationService = InitializePersonalizationService(true, true, false);
 
 			HttpContext.Connection.RemoteIpAddress = IPAddress.None;
 
@@ -73,29 +68,29 @@ namespace uPersonalize.Tests.Services
 			}
 		}
 
-		[DataRow(PersonalizationConditions.Visited_Page)]
-		[DataRow(PersonalizationConditions.Visited_Page_Count)]
-		[DataRow(PersonalizationConditions.Event_Triggered)]
-		[DataRow(PersonalizationConditions.Event_Triggered_Count)]
 		[TestMethod]
-		public async Task DoesFilterMatch_Valid_Filter_Key_Value_List_Match(PersonalizationConditions personalizationCondition)
+		public async Task DoesFilterMatch_Valid_Filter_Key_Value_List_Match()
 		{
-			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(true),
-																 MoqProvider.HttpContextAccessor(HttpContext),
-																 MoqProvider.PersonalizationCookieManager(false, true));
+			_personalizationService = InitializePersonalizationService(true, false, true);
 
-			var filter = new PersonalizationFilter()
+			foreach (PersonalizationConditions personalizationCondition in Enum.GetValues(typeof(PersonalizationConditions)))
 			{
-				Action = PersonalizationActions.Show,
-				Condition = personalizationCondition,
-				PageId = "10",
-				EventName = "testEvent",
-				PageEventCount = 1,
-				DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
-			};
+				if (personalizationCondition == PersonalizationConditions.Visited_Page || personalizationCondition == PersonalizationConditions.Visited_Page_Count ||
+					personalizationCondition == PersonalizationConditions.Event_Triggered || personalizationCondition == PersonalizationConditions.Event_Triggered_Count)
+				{
+					var filter = new PersonalizationFilter()
+					{
+						Action = PersonalizationActions.Show,
+						Condition = personalizationCondition,
+						PageId = "10",
+						EventName = "testEvent",
+						PageEventCount = 1,
+						DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
+					};
 
-			Assert.IsTrue(await _personalizationService.DoesFilterMatch(filter));
+					Assert.IsTrue(await _personalizationService.DoesFilterMatch(filter));
+				}
+			}
 		}
 
 		[TestMethod]
@@ -119,29 +114,29 @@ namespace uPersonalize.Tests.Services
 			}
 		}
 
-		[DataRow(PersonalizationConditions.Visited_Page)]
-		[DataRow(PersonalizationConditions.Visited_Page_Count)]
-		[DataRow(PersonalizationConditions.Event_Triggered)]
-		[DataRow(PersonalizationConditions.Event_Triggered_Count)]
 		[TestMethod]
-		public async Task DoesFilterMatch_Valid_Filter_Key_Value_List_No_Match(PersonalizationConditions personalizationCondition)
+		public async Task DoesFilterMatch_Valid_Filter_Key_Value_List_No_Match()
 		{
-			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(true),
-																 MoqProvider.HttpContextAccessor(HttpContext),
-																 MoqProvider.PersonalizationCookieManager(false, true));
+			_personalizationService = InitializePersonalizationService(true, false, true);
 
-			var filter = new PersonalizationFilter()
+			foreach (PersonalizationConditions personalizationCondition in Enum.GetValues(typeof(PersonalizationConditions)))
 			{
-				Action = PersonalizationActions.Show,
-				Condition = personalizationCondition,
-				EventName = "notFound",
-				PageId = "15",
-				PageEventCount = 2,
-				DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
-			};
+				if (personalizationCondition == PersonalizationConditions.Visited_Page || personalizationCondition == PersonalizationConditions.Visited_Page_Count ||
+					personalizationCondition == PersonalizationConditions.Event_Triggered || personalizationCondition == PersonalizationConditions.Event_Triggered_Count)
+				{
+					var filter = new PersonalizationFilter()
+					{
+						Action = PersonalizationActions.Show,
+						Condition = personalizationCondition,
+						EventName = "notFound",
+						PageId = "15",
+						PageEventCount = 2,
+						DateTimeCompare = personalizationCondition == PersonalizationConditions.DateTime_After ? DateTime.Now.AddDays(-2) : DateTime.Now.AddDays(2)
+					};
 
-			Assert.IsFalse(await _personalizationService.DoesFilterMatch(filter));
+					Assert.IsFalse(await _personalizationService.DoesFilterMatch(filter));
+				}
+			}
 		}
 
 		[TestMethod]
@@ -166,10 +161,7 @@ namespace uPersonalize.Tests.Services
 		[TestMethod]
 		public async Task DoesFilterMatch_Empty_Cookies()
 		{
-			_personalizationService = new PersonalizationService(MoqProvider.Logger<PersonalizationService>(),
-																 MoqProvider.MemberManager(false),
-																 MoqProvider.HttpContextAccessor(HttpContext),
-																 MoqProvider.PersonalizationCookieManager(false, false));
+			_personalizationService = InitializePersonalizationService(false, false, true);
 
 			foreach (PersonalizationConditions personalizationCondition in Enum.GetValues(typeof(PersonalizationConditions)))
 			{
@@ -256,7 +248,7 @@ namespace uPersonalize.Tests.Services
 		[TestMethod]
 		public async Task GetPageLoadCount_Invalid_PageId(string pageId)
 		{
-			Assert.AreEqual(-1, await _personalizationService.GetPageLoadCount(pageId));
+			Assert.AreEqual(0, await _personalizationService.GetPageLoadCount(pageId));
 		}
 
 		[TestMethod]
@@ -275,7 +267,7 @@ namespace uPersonalize.Tests.Services
 		[TestMethod]
 		public async Task GetTriggeredEventCount_Invalid_EventId(string eventId)
 		{
-			Assert.AreEqual(-1, await _personalizationService.GetTriggeredEventCount(eventId));
+			Assert.AreEqual(0, await _personalizationService.GetTriggeredEventCount(eventId));
 		}
 	}
 }

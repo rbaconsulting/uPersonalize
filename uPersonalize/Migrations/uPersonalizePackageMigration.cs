@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Packaging;
+﻿using System.Reflection;
+using Umbraco.Cms.Core.Packaging;
 using uPersonalize.Constants;
 using uPersonalize.Migrations.Plans;
 
@@ -12,7 +13,9 @@ namespace uPersonalize.Migrations
 
 		protected override void DefinePlan()
 		{
-			To<uPersonalizePackage>(base.CreateRandomState());
+			var newVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+			To<uPersonalizePackage>(newVersion);
 		}
 	}
 }

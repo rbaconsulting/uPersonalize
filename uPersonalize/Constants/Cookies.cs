@@ -34,10 +34,13 @@ namespace uPersonalize.Constants
 			}
 		}
 
-		public struct RegexRules
+		public struct Shared
 		{
-			public static readonly Regex KeyValueListSingle = new("^[[a-zA-Z0-9]+:-?\\d+$");
-			public static readonly Regex KeyValueList = new("^([a-zA-Z0-9]+:-?\\d+,)*[[a-zA-Z0-9]+:-?\\d+$");
+			public struct RegexRules
+			{
+				public static readonly Regex KeyValueListSingle = new("^[[a-zA-Z0-9]+:-?\\d+$");
+				public static readonly Regex KeyValueList = new("^([a-zA-Z0-9]+:-?\\d+,)*[[a-zA-Z0-9]+:-?\\d+$");
+			}
 		}
 	}
 }

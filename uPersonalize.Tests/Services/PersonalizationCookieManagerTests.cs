@@ -97,7 +97,7 @@ namespace uPersonalize.Tests.Services
 			var cookieValue = GetUnitTestCookie(personalizationCondition);
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(Regex.IsMatch(cookieValue, RegexRules.Cookies.Values.KeyValueListSingle));
+			Assert.IsTrue(Cookies.Shared.RegexRules.KeyValueListSingle.IsMatch(cookieValue));
 			Assert.AreEqual($"{key}:2", cookieValue);
 		}
 
@@ -122,7 +122,7 @@ namespace uPersonalize.Tests.Services
 			_personalizationCookieManager.SetKeyValueListCookie(PersonalizationConditions.Visited_Page, "12345").Wait();
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(Regex.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page), RegexRules.Cookies.Values.KeyValueListSingle));
+			Assert.IsTrue(Cookies.Shared.RegexRules.KeyValueListSingle.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page)));
 		}
 
 		[TestMethod]
@@ -132,7 +132,7 @@ namespace uPersonalize.Tests.Services
 
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
 
-			Assert.IsTrue(Regex.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page), RegexRules.Cookies.Values.KeyValueList));
+			Assert.IsTrue(Cookies.Shared.RegexRules.KeyValueList.IsMatch(GetUnitTestCookie(PersonalizationConditions.Visited_Page)));
 		}
 
 		[TestMethod]
@@ -144,7 +144,8 @@ namespace uPersonalize.Tests.Services
 
 			Assert.AreEqual("10:2", cookieValue);
 			Assert.IsTrue(HttpContext.Response.Headers.Values.Count == 1);
-			Assert.IsTrue(Regex.IsMatch(cookieValue, RegexRules.Cookies.Values.KeyValueListSingle));
+
+			Assert.IsTrue(Cookies.Shared.RegexRules.KeyValueListSingle.IsMatch(cookieValue));
 		}
 
 		[TestMethod]

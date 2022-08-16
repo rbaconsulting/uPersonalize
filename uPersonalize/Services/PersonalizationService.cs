@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using uPersonalize.Constants;
 using Microsoft.Extensions.Primitives;
 using Umbraco.Cms.Core.Security;
-using static uPersonalize.Constants.RegexRules;
 using System.Web;
 using System.Collections.Generic;
 
@@ -99,14 +98,14 @@ namespace uPersonalize.Services
 						{
 							var clientIPAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress;
 
-							if (Regex.IsMatch(filter.IpAddress, Conditions.IP) && !IPAddress.IsLoopback(clientIPAddress))
+							if (Headers.XForwardedFor.RegexRules.Ip.IsMatch(filter.IpAddress) && !IPAddress.IsLoopback(clientIPAddress))
 							{
 								var ipToMatch = filter.IpAddress.Split('.');
 								var ipAddressSegments = clientIPAddress.ToString().Split('.');
 
 								for (int i = 0; i < 4; i++)
 								{
-									if (Regex.IsMatch(ipToMatch[i], Conditions.IPMask))
+									if (Headers.XForwardedFor.RegexRules.IpMask.IsMatch(ipToMatch[i]))
 									{
 										continue;
 									}
