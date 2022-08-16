@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("uPersonalizeButtonController", function ($scope, localizationService, editorService) {
+﻿angular.module("umbraco").controller("uPersonalizeButtonController", function ($scope, editorService) {
 	var config = $scope.model.value ? JSON.parse($scope.model.value) : {
 		condition: '',
 		action: '',
@@ -12,8 +12,9 @@
 	};
 
 	if (config) {
-
-		config.dateTimeCompare = config.dateTimeCompare.replace('Z', '');
+		if (config.dateTimeCompare) {
+			config.dateTimeCompare = config.dateTimeCompare.replace('Z', '');
+		}
 
 		$scope.editGridItemSettings = function () {
 			var dialogOptions = {

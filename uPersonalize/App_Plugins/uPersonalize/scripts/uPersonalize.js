@@ -93,13 +93,12 @@
 
 		if (buttons.length > 0) {
 			for (var i = 0; i < buttons.length; i++) {
-
 				var button = buttons[i];
 
-				var eventName = button.dataset.upersonalizeEventName;
-
-				if (eventName) {
+				if (button) {
 					button.addEventListener("click", async function () {
+						var eventName = this.dataset.upersonalizeEventName;
+
 						await uPersonalize.triggerEvent(eventName);
 					});
 				}

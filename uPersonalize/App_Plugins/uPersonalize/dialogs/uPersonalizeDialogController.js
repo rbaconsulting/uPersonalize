@@ -64,15 +64,15 @@
         },
         {
             "label": "Windows",
-            "value": "Desktop_Windows"
+            "value": "Windows"
         },
         {
             "label": "Linux",
-            "value": "Desktop_Linux"
+            "value": "Linux"
         },
         {
             "label": "Mac",
-            "value": "Desktop_Mac"
+            "value": "Mac"
         }
     ];
 

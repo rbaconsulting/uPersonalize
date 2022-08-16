@@ -4,6 +4,7 @@ using uPersonalize.Enums;
 
 namespace uPersonalize.Models
 {
+	[JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
 	public class PersonalizationFilter
 	{
 		public PersonalizationConditions Condition { get; set; }
@@ -33,8 +34,8 @@ namespace uPersonalize.Models
 
 		public bool IsValid()
 		{
-			if(Condition != PersonalizationConditions.Default && Action != PersonalizationActions.Default)
-            {
+			if (Condition != PersonalizationConditions.Default && Action != PersonalizationActions.Default)
+			{
 				switch (Condition)
 				{
 					case PersonalizationConditions.IP_Address: return !string.IsNullOrWhiteSpace(IpAddress);
@@ -48,7 +49,7 @@ namespace uPersonalize.Models
 					case PersonalizationConditions.Logged_In: return true;
 					default: break;
 				}
-			}		
+			}
 
 			return false;
 		}

@@ -4,10 +4,9 @@
 	{
 		Default = 0,
 		Android = 1,
-		iOS = 2,
-		Windows_Phone = 3,
-		Windows = 4,
-		Linux = 5,
-		Mac = 6
+		iPhone = 2,
+		Windows = 3,
+		Linux = 4,
+		Mac = 5
 	}
 }
