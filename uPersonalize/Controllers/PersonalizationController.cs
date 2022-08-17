@@ -5,6 +5,7 @@ using Umbraco.Cms.Web.Common.Controllers;
 using System.Threading.Tasks;
 using uPersonalize.Models;
 using uPersonalize.Constants;
+using uPersonalize.Enums;
 
 namespace uPersonalize.Controllers
 {
@@ -40,6 +41,13 @@ namespace uPersonalize.Controllers
 		public async Task ResetPersonalization(bool includeOptOut)
 		{
 			await _personalizationService.ResetPersonalization(includeOptOut);
+		}
+
+		[HttpGet]
+		[Route("umbraco/uPersonalize/Personalization/GetDeviceType")]
+		public DeviceTypes GetDeviceType()
+		{
+			return _personalizationService.GetDeviceType();
 		}
 
 		[HttpPost]

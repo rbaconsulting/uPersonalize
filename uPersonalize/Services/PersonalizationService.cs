@@ -51,34 +51,57 @@ namespace uPersonalize.Services
 			return false;
 		}
 
+		public DeviceTypes GetDeviceType()
+		{
+			var deviceType = DeviceTypes.Default;
+			var userAgent = _httpContextAccessor.HttpContext.Request.Headers[Headers.UserAgent.Name];
+
+			if (!StringValues.IsNullOrEmpty(userAgent))
+			{
+				if (Headers.UserAgent.RegexRules.Android.IsMatch(userAgent))
+				{
+					deviceType = DeviceTypes.Android;
+				}
+				else if (Headers.UserAgent.RegexRules.iPhone.IsMatch(userAgent))
+				{
+					deviceType = DeviceTypes.iPhone;
+				}
+				else if (Headers.UserAgent.RegexRules.Windows.IsMatch(userAgent))
+				{
+					deviceType = DeviceTypes.Windows;
+				}
+				else if (Headers.UserAgent.RegexRules.Linux.IsMatch(userAgent))
+				{
+					deviceType = DeviceTypes.Linux;
+				}
+				else if (Headers.UserAgent.RegexRules.Mac.IsMatch(userAgent))
+				{
+					deviceType = DeviceTypes.Mac;
+				}
+			}
+
+			return deviceType;
+		}
+
 		public async Task<bool> OnPageLoad(int pageId)
 		{
 			if (!await IsOptOut())
 			{
 				if (pageId > 0)
 				{
-					await RecordPageLoad(pageId.ToString());
+					var recordPageLoadResult = await RecordPageLoad(pageId.ToString());
+
+					if (!recordPageLoadResult)
+					{
+						_logger.LogWarning("RecordPageLoad failed to track page ID!");
+					}
 				}
 
-				var userAgent = _httpContextAccessor.HttpContext.Request.Headers[Headers.UserAgent.Name];
+				var deviceCookieResult = await _cookieManager.SetCookie(PersonalizationConditions.Device_Type, GetDeviceType().ToString());
 
-				if (!StringValues.IsNullOrEmpty(userAgent))
+				if(!deviceCookieResult)
 				{
-					var deviceType = DeviceTypes.Default;
-
-					if (Headers.UserAgent.RegexRules.Android.IsMatch(userAgent))
-					{
-						deviceType = DeviceTypes.Android;
-					}
-					else if (Headers.UserAgent.RegexRules.Windows.IsMatch(userAgent))
-					{
-						deviceType = DeviceTypes.Windows;
-					}
-
-					if (deviceType != DeviceTypes.Default)
-					{
-						await _cookieManager.SetCookie(PersonalizationConditions.Device_Type, deviceType.ToString());
-					}
+					_logger.LogWarning("SetCookie failed to create device type cookie!");
 				}
 			}
 

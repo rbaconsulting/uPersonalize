@@ -24,6 +24,10 @@
 		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/resetPersonalization/${includeOptOut}`, 'POST', null);
 	}
 
+	static async getDeviceType() {
+		await uPersonalize.makeRequest('/umbraco/uPersonalize/Personalization/getDeviceType', 'GET', null);
+	}
+
 	static async onPageLoad(pageId) {
 		await uPersonalize.makeRequest(`/umbraco/uPersonalize/Personalization/onPageLoad/${pageId}`, 'POST', null);
 	}
@@ -63,8 +67,6 @@
 
 				element.add
 			}
-
-
 		}
 	}
 

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using uPersonalize.Services;
+using uPersonalize.Enums;
 
 namespace uPersonalize.Interfaces
 {
@@ -21,6 +22,12 @@ namespace uPersonalize.Interfaces
 		/// </summary>
 		/// <returns>true on success, false on failure.</returns>
 		Task<bool> OptOut();
+
+		/// <summary>
+		/// Gets the device type of the requesting user.
+		/// </summary>
+		/// <returns><see cref="DeviceTypes">uPersonalize.Enums.DeviceTypes</see></returns>
+		DeviceTypes GetDeviceType();
 
 		/// <summary>
 		/// Resets all personalization data for the current user, excludes opt out cookie by default.
