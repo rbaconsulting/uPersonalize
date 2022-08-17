@@ -3,14 +3,16 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<RepositoryUrl>https://github.com/rbaconsulting/uPersonalize</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<Company>RBA Consulting</Company>
+		<Company>RBA. Inc.</Company>
 		<Authors>Austin Gilbert</Authors>
 		<PackageProjectUrl>https://github.com/rbaconsulting/uPersonalize/wiki</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>Umbraco;Personalization</PackageTags>
+		<PackageTags>Umbraco;Personalization;Umbraco 9;Umbraco 10</PackageTags>
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
 		<Description>An app plugin adding personalization options to the Umbraco CMS.</Description>
 		<PackageIcon>logo.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>Please visit our github releases page for the release notes. https://github.com/rbaconsulting/uPersonalize/releases</PackageReleaseNotes>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -28,7 +30,7 @@
 			<PackagePath>content\App_Plugins</PackagePath>
 		</Content>
 
-		<Content Include="Views\Partials\grid\uPersonalize.cshtml">
+		<Content Include="Views\Partials\grid\uPersonalize-example.cshtml">
 			<Pack>true</Pack>
 			<PackagePath>content\Views\Partials\grid</PackagePath>
 		</Content>
