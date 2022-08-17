@@ -11,7 +11,10 @@ namespace uPersonalize.Constants
 			public struct RegexRules
 			{
 				public static readonly Regex Android = new Regex(@"Android");
+				public static readonly Regex iPhone = new Regex(@"iPhone|iPod|iPad");
 				public static readonly Regex Windows = new Regex(@"Windows");
+				public static readonly Regex Linux = new Regex(@"Linux");
+				public static readonly Regex Mac = new Regex(@"Macintosh");
 			}
 		}
 
