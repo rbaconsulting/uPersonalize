@@ -1,4 +1,5 @@
 ﻿{
+	"name": "uPersonalize",
 	"dashboards": [
 		{
 			"alias": "uPersonalizeSettingsDashboard",
@@ -24,5 +25,8 @@
 		"/App_Plugins/uPersonalize/dashboards/uPersonalizeSettingsController.js",
 		"/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButtonController.js",
 		"/App_Plugins/uPersonalize/dialogs/uPersonalizeDialogController.js"
+	],
+	"css": [
+		"/App_Plugins/uPersonalize/propertyeditors/uPersonalizeButton.css"
 	]
 }
