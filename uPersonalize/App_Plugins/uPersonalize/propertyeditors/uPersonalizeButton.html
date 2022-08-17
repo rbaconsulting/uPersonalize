@@ -1,3 +1,6 @@
-﻿<div ng-controller="uPersonalizeButtonController">
-	<button type="button" class="umb-node-preview-add" ng-click="editGridItemSettings()">Personalize</button>
+﻿<div ng-controller="uPersonalizeButtonController as vm">
+	<div class="d-flex">
+		<button type="button" class="uPersonalize-configure-button" ng-click="editGridItemSettings()">{{vm.buttonText}}</button>
+		<button type="button" class="uPersonalize-trash-button icon-trash" title="Remove Personalization" ng-if="vm.showDeleteButton" ng-click="removePersonalization()"></button>
+	</div>
 </div>
