@@ -119,7 +119,7 @@ namespace uPersonalize.Services
 					case PersonalizationConditions.IP_Address:
 						if (!string.IsNullOrWhiteSpace(filter.IpAddress))
 						{
-							var clientIPAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress;
+							var clientIPAddress = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress.MapToIPv4();
 
 							if (Headers.XForwardedFor.RegexRules.Ip.IsMatch(filter.IpAddress) && !IPAddress.IsLoopback(clientIPAddress))
 							{
